@@ -281,30 +281,30 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                   </div>
                 </div>
 
-                {/* Top Metadata Block: Invoice Details (Left) & Bill To (Right) - FIXED 2 COLUMNS */}
-                <div className="grid grid-cols-2 gap-5 mb-5 text-sm text-[#2B2E12]">
+                {/* Top Metadata Block: Invoice Details (Left 2 cols) & Bill To (Right 3 cols) */}
+                <div className="grid grid-cols-5 gap-5 mb-5 text-sm text-[#2B2E12]">
                   {/* Left Box: Invoice Details */}
-                  <div className="space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
+                  <div className="col-span-2 space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
                     <h3 className="font-extrabold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1.5 mb-2">
                       Invoice Details
                     </h3>
                     <div className="flex items-center">
-                      <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Invoice No</span>
+                      <span className="w-20 font-bold text-[#6B6F4A] shrink-0 text-sm">Invoice No</span>
                       <span className="font-mono font-black text-[#4E540C] text-base">: #{receiptNo}</span>
                     </div>
                     <div className="flex items-center">
-                      <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Date</span>
+                      <span className="w-20 font-bold text-[#6B6F4A] shrink-0 text-sm">Date</span>
                       <span className="font-mono font-bold text-[#2B2E12] text-sm">: {formattedDate}</span>
                     </div>
                   </div>
 
-                  {/* Right Box: Bill To */}
-                  <div className="space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
+                  {/* Right Box: Bill To (3/5 Width for Maximum Address Space) */}
+                  <div className="col-span-3 space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
                     <h3 className="font-extrabold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1.5 mb-2">
                       Bill To
                     </h3>
                     <div className="flex items-center">
-                      <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Name</span>
+                      <span className="w-20 font-bold text-[#6B6F4A] shrink-0 text-sm">Name</span>
                       <span className="font-bold text-[#2B2E12] mr-1.5">:</span>
                       <input
                         type="text"
@@ -314,15 +314,15 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                         className="bg-transparent border-b border-transparent hover:border-[#4E540C]/30 focus:border-[#4E540C] focus:outline-none font-bold text-sm w-full py-0.5"
                       />
                     </div>
-                    <div className="flex items-center">
-                      <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Address</span>
-                      <span className="font-bold text-[#2B2E12] mr-1.5">:</span>
-                      <input
-                        type="text"
+                    <div className="flex items-start">
+                      <span className="w-20 font-bold text-[#6B6F4A] shrink-0 text-sm mt-0.5">Address</span>
+                      <span className="font-bold text-[#2B2E12] mr-1.5 mt-0.5">:</span>
+                      <textarea
+                        rows={2}
                         value={customerAddress}
                         onChange={(e) => setCustomerAddress(e.target.value)}
                         placeholder="Enter Address"
-                        className="bg-transparent border-b border-transparent hover:border-[#4E540C]/30 focus:border-[#4E540C] focus:outline-none font-semibold text-sm w-full py-0.5 placeholder-[#6B6F4A]/40"
+                        className="bg-transparent border-b border-transparent hover:border-[#4E540C]/30 focus:border-[#4E540C] focus:outline-none font-semibold text-sm w-full py-0.5 resize-none leading-snug placeholder-[#6B6F4A]/40 overflow-hidden"
                       />
                     </div>
                   </div>
