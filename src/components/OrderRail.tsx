@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Plus, Minus, Printer, PlusCircle, ShoppingBag } from 'lucide-react';
+import { Trash2, Plus, Minus, Printer, PlusCircle, ShoppingBag, X } from 'lucide-react';
 import type { OrderItem } from '../types/pos';
 
 interface OrderRailProps {
@@ -21,6 +21,8 @@ interface OrderRailProps {
   onOpenAddCustomItem: () => void;
   onOpenInvoiceModal: () => void;
   theme?: 'dark' | 'light';
+  isMobileOpen?: boolean;
+  onCloseMobile?: () => void;
 }
 
 export const OrderRail: React.FC<OrderRailProps> = ({
@@ -41,6 +43,8 @@ export const OrderRail: React.FC<OrderRailProps> = ({
   onOpenAddCustomItem,
   onOpenInvoiceModal,
   theme = 'dark',
+  isMobileOpen = false,
+  onCloseMobile,
 }) => {
   const isDark = theme === 'dark';
 
@@ -49,47 +53,59 @@ export const OrderRail: React.FC<OrderRailProps> = ({
   const taxAmount = ((subtotal - discountAmount) * taxPct) / 100;
   const grandTotal = subtotal - discountAmount + taxAmount;
 
-  return (
-    <aside
-      className={`w-96 border-l flex flex-col h-screen select-none shrink-0 transition-colors ${
-        isDark
-          ? 'bg-[#191A25] border-[#242533]'
-          : 'bg-white border-slate-200 shadow-sm'
-      }`}
-    >
+  const content = (
+    <div className="flex flex-col h-full select-none">
       {/* Order Rail Header */}
       <div
-        className={`p-5 border-b ${
+        className={`p-5 border-b shrink-0 ${
           isDark ? 'border-[#242533] bg-[#191A25]' : 'border-slate-200 bg-white'
         }`}
       >
         <div className="flex items-center justify-between mb-3">
-          <div>
-            <h2
-              className={`text-xl font-bold font-poppins ${
-                isDark ? 'text-white' : 'text-slate-900'
-              }`}
-            >
-              Order
-            </h2>
-            <div className="flex items-center gap-2 mt-0.5">
-              <span className={`text-xs font-medium ${isDark ? 'text-[#848796]' : 'text-slate-500'}`}>
-                {tableLabel}
-              </span>
+          <div className="flex items-center gap-2">
+            <div>
+              <h2
+                className={`text-xl font-bold font-poppins ${
+                  isDark ? 'text-white' : 'text-slate-900'
+                }`}
+              >
+                Current Order
+              </h2>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className={`text-xs font-medium ${isDark ? 'text-[#848796]' : 'text-slate-500'}`}>
+                  {tableLabel}
+                </span>
+              </div>
             </div>
           </div>
 
-          <button
-            onClick={onOpenAddCustomItem}
-            className={`flex items-center gap-1.5 border text-xs font-semibold px-3.5 py-2 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm ${
-              isDark
-                ? 'bg-[#262737] hover:bg-[#2F3045] border-[#282937] text-white'
-                : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800'
-            }`}
-          >
-            <PlusCircle className="w-4 h-4 text-[#FF5A5F]" />
-            <span>Add-On</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onOpenAddCustomItem}
+              className={`flex items-center gap-1.5 border text-xs font-semibold px-3 py-1.5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm ${
+                isDark
+                  ? 'bg-[#262737] hover:bg-[#2F3045] border-[#282937] text-white'
+                  : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800'
+              }`}
+            >
+              <PlusCircle className="w-4 h-4 text-[#FF5A5F]" />
+              <span>Add-On</span>
+            </button>
+
+            {/* Mobile Close Button */}
+            {onCloseMobile && (
+              <button
+                onClick={onCloseMobile}
+                className={`lg:hidden p-1.5 rounded-xl border transition-colors ${
+                  isDark
+                    ? 'border-[#282937] bg-[#1F202C] text-white hover:bg-white/10'
+                    : 'border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200'
+                }`}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Customer Details Inputs: Customer Name & Customer Address */}
@@ -217,7 +233,7 @@ export const OrderRail: React.FC<OrderRailProps> = ({
 
                   <button
                     onClick={() => onRemoveItem(item.id)}
-                    className={`p-1 rounded-lg transition-colors ${
+                    className={`p-1 rounded-lg transition-colors cursor-pointer ${
                       isDark ? 'text-[#848796] hover:text-[#FF5A5F] hover:bg-white/5' : 'text-slate-400 hover:text-red-500 hover:bg-slate-200/50'
                     }`}
                   >
@@ -247,7 +263,7 @@ export const OrderRail: React.FC<OrderRailProps> = ({
                   <div className={`flex items-center gap-2 px-2 py-1 rounded-xl border ${isDark ? 'bg-[#181924] border-[#282937]' : 'bg-white border-slate-200'}`}>
                     <button
                       onClick={() => onUpdateQty(item.id, -1)}
-                      className={`transition-colors active:scale-75 ${isDark ? 'text-[#848796] hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
+                      className={`transition-colors active:scale-75 cursor-pointer ${isDark ? 'text-[#848796] hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
                     >
                       <Minus className="w-3 h-3" />
                     </button>
@@ -263,7 +279,7 @@ export const OrderRail: React.FC<OrderRailProps> = ({
 
                     <button
                       onClick={() => onUpdateQty(item.id, 1)}
-                      className={`transition-colors active:scale-75 ${isDark ? 'text-[#848796] hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
+                      className={`transition-colors active:scale-75 cursor-pointer ${isDark ? 'text-[#848796] hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
                     >
                       <Plus className="w-3 h-3" />
                     </button>
@@ -276,7 +292,7 @@ export const OrderRail: React.FC<OrderRailProps> = ({
       </div>
 
       {/* Pinned Order Summary & Big Print Button Footer */}
-      <div className={`p-5 border-t flex flex-col gap-3 ${isDark ? 'border-[#242533] bg-[#191A25]' : 'border-slate-200 bg-white'}`}>
+      <div className={`p-5 border-t shrink-0 flex flex-col gap-3 ${isDark ? 'border-[#242533] bg-[#191A25]' : 'border-slate-200 bg-white'}`}>
         <div className={`space-y-2 text-xs p-4 rounded-2xl border ${isDark ? 'bg-[#1F202C] border-[#282937]' : 'bg-slate-50 border-slate-200'}`}>
           <div className={`flex items-center justify-between ${isDark ? 'text-[#848796]' : 'text-slate-600'}`}>
             <span>Sub Total</span>
@@ -327,13 +343,50 @@ export const OrderRail: React.FC<OrderRailProps> = ({
 
         <button
           disabled={orderItems.length === 0}
-          onClick={onOpenInvoiceModal}
+          onClick={() => {
+            if (onCloseMobile) onCloseMobile();
+            onOpenInvoiceModal();
+          }}
           className="w-full bg-[#FF5A5F] hover:bg-[#E04C51] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 px-4 rounded-2xl flex items-center justify-center gap-2.5 transition-all shadow-lg shadow-[#FF5A5F]/20 active:scale-[0.98] cursor-pointer"
         >
           <Printer className="w-5 h-5" />
           <span className="font-poppins text-sm tracking-wide">Print Invoice</span>
         </button>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* 1. Desktop Pinned Order Rail (lg screens and up) */}
+      <aside
+        className={`hidden lg:flex w-96 border-l flex-col h-screen select-none shrink-0 transition-colors ${
+          isDark
+            ? 'bg-[#191A25] border-[#242533]'
+            : 'bg-white border-slate-200 shadow-sm'
+        }`}
+      >
+        {content}
+      </aside>
+
+      {/* 2. Mobile Slide-Over Drawer Modal (< lg screens) */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <div className="lg:hidden fixed inset-0 z-50 flex flex-col justify-end bg-black/80 backdrop-blur-sm">
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className={`w-full h-[90vh] rounded-t-3xl overflow-hidden shadow-2xl ${
+                isDark ? 'bg-[#191A25]' : 'bg-white'
+              }`}
+            >
+              {content}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };

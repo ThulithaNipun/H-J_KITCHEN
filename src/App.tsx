@@ -12,7 +12,7 @@ import { EditMenuItemModal } from './components/EditMenuItemModal';
 import { AddCustomItemModal } from './components/AddCustomItemModal';
 import { OrderHistoryModal } from './components/OrderHistoryModal';
 import { DeleteConfirmationModal } from './components/DeleteConfirmationModal';
-import { Plus, Edit3, Trash2, UtensilsCrossed, CheckCircle2 } from 'lucide-react';
+import { Plus, Edit3, Trash2, UtensilsCrossed, CheckCircle2, ShoppingCart } from 'lucide-react';
 
 import type { MenuItem, OrderItem, BusinessSettings, Order } from './types/pos';
 import {
@@ -67,6 +67,9 @@ export function App() {
   const [discountPct, setDiscountPct] = useState(0);
   const [taxPct, setTaxPct] = useState(0);
 
+  // Mobile Drawer State
+  const [isMobileOrderOpen, setIsMobileOrderOpen] = useState(false);
+
   // Navigation & Filtering State
   const [activeNavTab, setActiveNavTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState('All Items');
@@ -92,6 +95,18 @@ export function App() {
   });
 
   const isDark = theme === 'dark';
+
+  // Derived Totals for Mobile Floating Cart Button
+  const totalItemCount = useMemo(() => {
+    return orderItems.reduce((sum, item) => sum + item.qty, 0);
+  }, [orderItems]);
+
+  const orderTotalAmount = useMemo(() => {
+    const sub = orderItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const disc = (sub * discountPct) / 100;
+    const tax = ((sub - disc) * taxPct) / 100;
+    return sub - disc + tax;
+  }, [orderItems, discountPct, taxPct]);
 
   // Supabase Backend Sync on Load
   useEffect(() => {
@@ -327,7 +342,7 @@ export function App() {
         )}
       </AnimatePresence>
 
-      {/* 1. Left Sidebar Rail */}
+      {/* 1. Left Sidebar / Mobile Bottom Nav */}
       <Sidebar
         activeTab={activeNavTab}
         setActiveTab={setActiveNavTab}
@@ -338,7 +353,7 @@ export function App() {
 
       {/* 2. Main Workspace */}
       <main
-        className={`flex-1 flex flex-col p-6 overflow-y-auto min-w-0 transition-colors ${
+        className={`flex-1 flex flex-col p-4 sm:p-6 pb-24 lg:pb-6 overflow-y-auto min-w-0 transition-colors ${
           isDark ? 'bg-[#14151D]' : 'bg-[#F4F5F9]'
         }`}
       >
@@ -487,7 +502,7 @@ export function App() {
                   variants={gridContainerVariants}
                   initial="hidden"
                   animate="show"
-                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-8"
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 pb-8"
                 >
                   {filteredMenuItems.map((item) => (
                     <MenuItemCard
@@ -505,7 +520,20 @@ export function App() {
         )}
       </main>
 
-      {/* 3. Right Pinned Order Rail */}
+      {/* 3. Mobile Floating View Order Trigger Button (Screens under lg) */}
+      <div className="lg:hidden fixed bottom-20 right-4 z-30">
+        <button
+          onClick={() => setIsMobileOrderOpen(true)}
+          className="bg-[#FF5A5F] hover:bg-[#E04C51] text-white px-5 py-3.5 rounded-full shadow-2xl flex items-center gap-2.5 font-bold font-poppins text-xs active:scale-95 cursor-pointer border border-white/20"
+        >
+          <ShoppingCart className="w-5 h-5" />
+          <span>
+            Order {totalItemCount > 0 ? `(${totalItemCount})` : ''} • Rs. {orderTotalAmount.toFixed(0)}
+          </span>
+        </button>
+      </div>
+
+      {/* 4. Order Rail Panel (Desktop pinned & Mobile Drawer) */}
       <OrderRail
         orderItems={orderItems}
         tableLabel={tableLabel}
@@ -524,9 +552,11 @@ export function App() {
         onOpenAddCustomItem={() => setIsAddCustomItemModalOpen(true)}
         onOpenInvoiceModal={handlePrintBillsAndOpenInvoice}
         theme={theme}
+        isMobileOpen={isMobileOrderOpen}
+        onCloseMobile={() => setIsMobileOrderOpen(false)}
       />
 
-      {/* 4. Modals */}
+      {/* 5. Modals */}
       <InvoiceModal
         isOpen={isInvoiceModalOpen}
         onClose={() => setIsInvoiceModalOpen(false)}
