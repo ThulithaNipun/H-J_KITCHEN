@@ -9,6 +9,7 @@ import { InvoiceModal } from './components/InvoiceModal';
 import { SettingsModal } from './components/SettingsModal';
 import { AddMenuItemModal } from './components/AddMenuItemModal';
 import { EditMenuItemModal } from './components/EditMenuItemModal';
+import { AddCustomItemModal } from './components/AddCustomItemModal';
 import { OrderHistoryModal } from './components/OrderHistoryModal';
 import { DeleteConfirmationModal } from './components/DeleteConfirmationModal';
 import { Plus, Edit3, Trash2, UtensilsCrossed, CheckCircle2 } from 'lucide-react';
@@ -65,6 +66,7 @@ export function App() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isAddMenuItemModalOpen, setIsAddMenuItemModalOpen] = useState(false);
   const [isEditMenuItemModalOpen, setIsEditMenuItemModalOpen] = useState(false);
+  const [isAddCustomItemModalOpen, setIsAddCustomItemModalOpen] = useState(false);
   const [editingMenuItem, setEditingMenuItem] = useState<MenuItem | null>(null);
   const [deletingMenuItem, setDeletingMenuItem] = useState<MenuItem | null>(null);
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
@@ -190,15 +192,9 @@ export function App() {
     );
   };
 
-  const handleAddCustomItem = () => {
-    const customItem: OrderItem = {
-      id: 'custom-' + Date.now(),
-      name: 'Custom Special / Add-On',
-      qty: 1,
-      price: 150,
-    };
+  const handleAddCustomItem = (customItem: OrderItem) => {
     setOrderItems((prev) => [...prev, customItem]);
-    showToast('Added Custom Add-On to order!');
+    showToast(`Added "${customItem.name}" to order!`);
   };
 
   // Immediate Order History Save when "Print Invoice" button is clicked
@@ -466,7 +462,7 @@ export function App() {
         onUpdateQty={handleUpdateQty}
         onRemoveItem={handleRemoveItem}
         onUpdateItemNotes={handleUpdateItemNotes}
-        onOpenAddCustomItem={handleAddCustomItem}
+        onOpenAddCustomItem={() => setIsAddCustomItemModalOpen(true)}
         onOpenInvoiceModal={handlePrintBillsAndOpenInvoice}
       />
 
@@ -507,6 +503,12 @@ export function App() {
         onSaveItem={handleSaveMenuItem}
         onDeleteItem={handleDeleteMenuItem}
         categories={categories}
+      />
+
+      <AddCustomItemModal
+        isOpen={isAddCustomItemModalOpen}
+        onClose={() => setIsAddCustomItemModalOpen(false)}
+        onAddCustomItem={handleAddCustomItem}
       />
 
       <OrderHistoryModal
