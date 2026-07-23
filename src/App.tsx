@@ -28,6 +28,9 @@ import {
   deleteMenuItemFromSupabase,
   fetchOrderHistoryFromSupabase,
   deleteOrderFromSupabase,
+  fetchCustomersFromSupabase,
+  saveCustomerToSupabase,
+  deleteCustomerFromSupabase,
   isSupabaseConfigured,
 } from './lib/supabase';
 
@@ -101,23 +104,29 @@ export function App() {
     localStorage.setItem('hj_saved_customers', JSON.stringify(customers));
   }, [customers]);
 
-  const handleAddCustomer = (c: Omit<Customer, 'id'>) => {
+  const handleAddCustomer = async (c: Omit<Customer, 'id'>) => {
     const newCustomer: Customer = {
       ...c,
       id: `c_${Date.now()}`,
       created_at: new Date().toISOString(),
     };
+    const savedRemote = await saveCustomerToSupabase(c);
+    if (savedRemote && savedRemote.id) {
+      newCustomer.id = savedRemote.id;
+    }
     setCustomers((prev) => [newCustomer, ...prev]);
     showToast(`Saved "${newCustomer.name}" to directory!`);
   };
 
-  const handleEditCustomer = (updated: Customer) => {
+  const handleEditCustomer = async (updated: Customer) => {
     setCustomers((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
+    await saveCustomerToSupabase(updated);
     showToast(`Updated "${updated.name}"!`);
   };
 
-  const handleDeleteCustomer = (id: string) => {
+  const handleDeleteCustomer = async (id: string) => {
     setCustomers((prev) => prev.filter((c) => c.id !== id));
+    await deleteCustomerFromSupabase(id);
     showToast('Customer deleted from directory!');
   };
 
@@ -163,6 +172,10 @@ export function App() {
         const remoteOrders = await fetchOrderHistoryFromSupabase();
         if (remoteOrders && remoteOrders.length > 0) {
           setOrderHistory(remoteOrders);
+        }
+        const remoteCustomers = await fetchCustomersFromSupabase();
+        if (remoteCustomers && remoteCustomers.length > 0) {
+          setCustomers(remoteCustomers);
         }
       } catch (err) {
         console.log('Supabase sync using local fallback data:', err);

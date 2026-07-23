@@ -292,3 +292,45 @@ export async function deleteOrderFromSupabase(orderId: string, receiptNo?: numbe
   const { error } = await query;
   if (error) console.error('Supabase order delete error:', error);
 }
+
+export async function fetchCustomersFromSupabase(): Promise<Customer[] | null> {
+  if (!isSupabaseConfigured()) return null;
+  const { data, error } = await supabase
+    .from('customers')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error || !data) {
+    console.error('Supabase fetch customers error:', error);
+    return null;
+  }
+  return data as Customer[];
+}
+
+export async function saveCustomerToSupabase(customer: Customer | Omit<Customer, 'id'>) {
+  if (!isSupabaseConfigured()) return null;
+  const payload: any = {
+    name: customer.name,
+    address: customer.address,
+    phone: customer.phone || null,
+  };
+
+  if ('id' in customer && customer.id && !customer.id.startsWith('c_') && !customer.id.startsWith('c1') && !customer.id.startsWith('c2') && !customer.id.startsWith('c3')) {
+    payload.id = customer.id;
+  }
+
+  const { data, error } = await supabase
+    .from('customers')
+    .upsert(payload)
+    .select()
+    .single();
+
+  if (error) console.error('Supabase customer save error:', error);
+  return data;
+}
+
+export async function deleteCustomerFromSupabase(id: string) {
+  if (!isSupabaseConfigured() || id.startsWith('c_') || id.startsWith('c1') || id.startsWith('c2') || id.startsWith('c3')) return null;
+  const { error } = await supabase.from('customers').delete().eq('id', id);
+  if (error) console.error('Supabase customer delete error:', error);
+}
