@@ -14,6 +14,7 @@ export const DEFAULT_BUSINESS_SETTINGS: BusinessSettings = {
   website: 'FB: H&J Kitchen',
   bank_name: 'Commercial Bank',
   bank_account: '8001234567',
+  bank_account_name: 'H&J Kitchen',
   invoice_note: 'Thank you for your order! For enquiries, please contact us on the number above.',
   logo_url: '/logo.webp'
 };
@@ -153,6 +154,7 @@ export async function updateBusinessSettingsInSupabase(settings: BusinessSetting
       website: settings.website,
       bank_name: settings.bank_name,
       bank_account: settings.bank_account,
+      bank_account_name: settings.bank_account_name || settings.name || 'H&J Kitchen',
       invoice_note: settings.invoice_note,
       logo_url: settings.logo_url,
       updated_at: new Date().toISOString(),

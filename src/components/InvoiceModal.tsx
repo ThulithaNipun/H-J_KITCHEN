@@ -473,7 +473,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                       </div>
                       <div className="flex items-center">
                         <span className="w-24 font-bold text-[#6B6F4A] shrink-0 text-sm">A/C Name</span>
-                        <span className="font-bold text-[#2B2E12] text-sm">: {businessSettings.name || 'H&J Kitchen'}</span>
+                        <span className="font-bold text-[#2B2E12] text-sm">: {businessSettings.bank_account_name || businessSettings.name || 'H&J Kitchen'}</span>
                       </div>
                     </div>
 

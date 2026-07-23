@@ -104,7 +104,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className="text-xs font-semibold text-app-text-secondary block mb-1">
                   Bank Name
@@ -119,12 +119,25 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               <div>
                 <label className="text-xs font-semibold text-app-text-secondary block mb-1">
-                  Bank Account Number
+                  Account Number
                 </label>
                 <input
                   type="text"
                   value={formData.bank_account}
                   onChange={(e) => setFormData({ ...formData, bank_account: e.target.value })}
+                  className="w-full bg-app-panel border border-app-border rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-app-red"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-app-text-secondary block mb-1">
+                  A/C Name
+                </label>
+                <input
+                  type="text"
+                  value={formData.bank_account_name || ''}
+                  onChange={(e) => setFormData({ ...formData, bank_account_name: e.target.value })}
+                  placeholder="H&J Kitchen"
                   className="w-full bg-app-panel border border-app-border rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-app-red"
                 />
               </div>

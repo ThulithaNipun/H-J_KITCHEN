@@ -41,6 +41,7 @@ export type BusinessSettings = {
   website: string;
   bank_name: string;
   bank_account: string;
+  bank_account_name?: string;
   invoice_note: string;
   logo_url?: string;
   updated_at?: string;

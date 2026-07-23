@@ -9,6 +9,7 @@ create table if not exists business_settings (
   website text default 'www.hjkitchen.lk',
   bank_name text default 'Commercial Bank',
   bank_account text default '8001234567',
+  bank_account_name text default 'H&J Kitchen',
   invoice_note text default 'Thank you for your order! For enquiries, please contact us on the number above.',
   logo_url text,
   updated_at timestamptz not null default now()
