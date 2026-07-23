@@ -120,7 +120,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
     });
   };
 
-  // Export Invoice as Crisp High-Res A4 PNG Image with Proper File Extension
+  // Export Invoice as Crisp High-Res A4 PNG Image with Fixed Standard Dimensions
   const handleDownloadPng = async () => {
     if (!invoiceRef.current) return;
     try {
@@ -192,42 +192,42 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-black/85 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/85 backdrop-blur-sm">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="relative w-full max-w-4xl max-h-[94vh] bg-[#4E540C] text-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-white/20 flex flex-col"
+          className="relative w-full max-w-4xl max-h-[96vh] bg-[#4E540C] text-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-white/20 flex flex-col"
         >
           {/* Sticky Top Control Bar */}
-          <div className="no-print sticky top-0 z-30 bg-[#2D3107] text-white px-5 py-3 flex items-center justify-between border-b border-white/10 shrink-0 shadow-md">
+          <div className="no-print sticky top-0 z-30 bg-[#2D3107] text-white px-4 sm:px-5 py-3 flex items-center justify-between border-b border-white/10 shrink-0 shadow-md">
             <div className="flex items-center gap-2">
-              <span className="font-poppins font-bold text-xs md:text-sm text-yellow-300">
+              <span className="font-poppins font-bold text-xs sm:text-sm text-yellow-300">
                 A4 Green Invoice Preview
               </span>
               {printed && (
-                <span className="flex items-center gap-1 text-[11px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-medium">
+                <span className="hidden sm:flex items-center gap-1 text-[11px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-medium">
                   <CheckCircle2 className="w-3 h-3" /> Saved
                 </span>
               )}
             </div>
 
-            <div className="flex items-center gap-2 md:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Download A4 PNG Button */}
               <button
                 onClick={handleDownloadPng}
                 disabled={isGeneratingPng}
-                className="bg-yellow-500 hover:bg-yellow-400 text-black text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-50"
+                className="bg-yellow-500 hover:bg-yellow-400 text-black text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-50"
                 title="Download Standard A4 High-Res PNG Image"
               >
                 <ImageIcon className="w-4 h-4" />
-                <span>{isGeneratingPng ? 'Generating A4...' : 'Save as A4 PNG Image'}</span>
+                <span>{isGeneratingPng ? 'Generating A4...' : 'Save as A4 PNG'}</span>
               </button>
 
               {/* Print Button */}
               <button
                 onClick={handlePrint}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-all shadow-md active:scale-95 cursor-pointer"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all shadow-md active:scale-95 cursor-pointer"
               >
                 <Printer className="w-4 h-4" />
                 <span>Print</span>
@@ -242,13 +242,14 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
             </div>
           </div>
 
-          {/* Scrollable Invoice Sheet Body Container */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-[#4E540C] flex justify-center">
-            {/* EXACT A4 DIMENSION SHEET CONTAINER (794px x 1123px aspect ratio) */}
+          {/* Scrollable Invoice Sheet Body Container with Horizontal Scroll Support on Mobile */}
+          <div className="flex-1 overflow-x-auto overflow-y-auto p-3 sm:p-6 bg-[#4E540C] flex justify-start sm:justify-center">
+            {/* STRICT FIXED A4 DIMENSION SHEET CONTAINER (794px x 1123px - UNCHANGED ON MOBILE) */}
             <div
               id="printable-invoice"
               ref={invoiceRef}
-              className="bg-white rounded-xl shadow-2xl p-6 md:p-8 text-[#2B2E12] font-inter border border-[#4E540C]/20 w-[794px] min-h-[1123px] flex flex-col justify-between"
+              style={{ width: '794px', minWidth: '794px', height: '1123px', minHeight: '1123px' }}
+              className="bg-white rounded-xl shadow-2xl p-8 text-[#2B2E12] font-inter border border-[#4E540C]/20 flex flex-col justify-between shrink-0"
             >
               <div>
                 {/* Header Bar: INVOICE title on Left, Logo on Right */}
@@ -280,7 +281,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                   </div>
                 </div>
 
-                {/* Top Metadata Block: Invoice Details (Left) & Bill To (Right) */}
+                {/* Top Metadata Block: Invoice Details (Left) & Bill To (Right) - FIXED 2 COLUMNS */}
                 <div className="grid grid-cols-2 gap-6 mb-6 text-xs text-[#2B2E12]">
                   {/* Left Box: Invoice Details */}
                   <div className="space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
@@ -451,8 +452,8 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                   </div>
                 </div>
 
-                {/* Bottom Section: Bank Payment Information & Note (Left) and Totals Summary (Right) */}
-                <div className="flex flex-col md:flex-row justify-between gap-6 mb-6 text-xs">
+                {/* Bottom Section: Bank Payment Information & Note (Left) and Totals Summary (Right) - FIXED FLEX ROW */}
+                <div className="flex flex-row justify-between gap-6 mb-6 text-xs">
                   {/* Left Side: Bank Payment Details & Note */}
                   <div className="flex-1 space-y-3">
                     {/* Bank Payment Information */}
@@ -485,8 +486,8 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                     </div>
                   </div>
 
-                  {/* Right Side: Totals Summary */}
-                  <div className="w-full md:w-72 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10 space-y-2 font-semibold">
+                  {/* Right Side: Totals Summary - FIXED WIDTH 288px */}
+                  <div className="w-72 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10 space-y-2 font-semibold shrink-0">
                     <div className="flex justify-between text-[#6B6F4A]">
                       <span>Sub Total</span>
                       <span className="font-mono text-[#2B2E12]">Rs. {subtotal.toFixed(2)}</span>
