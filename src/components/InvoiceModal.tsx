@@ -249,7 +249,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
               id="printable-invoice"
               ref={invoiceRef}
               style={{ width: '794px', minWidth: '794px', height: '1123px', minHeight: '1123px' }}
-              className="bg-white rounded-xl shadow-2xl p-8 text-[#2B2E12] font-inter border border-[#4E540C]/20 flex flex-col justify-between shrink-0 overflow-hidden"
+              className="bg-white rounded-xl shadow-2xl pt-8 px-8 pb-0 text-[#2B2E12] font-inter border border-[#4E540C]/20 flex flex-col justify-between shrink-0 overflow-hidden"
             >
               <div>
                 {/* Header Bar: INVOICE title on Left, Logo on Right */}
@@ -517,16 +517,22 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                 </div>
               </div>
 
-              {/* Green Full-Width Footer Banner (Edge-to-Edge with Generous Bottom Padding) */}
-              <div className="bg-[#4E540C] text-white -mx-8 -mb-8 pt-4 pb-6 px-8 rounded-b-xl text-center space-y-1 shadow-sm mt-auto">
+              {/* Green Full-Width Footer Banner (Edge-to-Edge with Zero Clipping) */}
+              <div className="bg-[#4E540C] text-white -mx-8 py-5 px-8 rounded-b-xl text-center space-y-1 shadow-sm mt-auto">
                 <h3 className="font-serif italic text-xl text-yellow-200">
                   Thank You & Come Again
                 </h3>
                 <p className="text-xs sm:text-sm font-bold tracking-wider uppercase font-poppins">
                   {businessSettings.name || 'H&J KITCHEN RESTAURANT'}
                 </p>
-                <p className="text-xs text-white/90 font-mono font-medium pt-0.5">
-                  Phone: {businessSettings.phone} | {businessSettings.website}
+                <p className="text-xs text-white/90 font-mono font-semibold pt-0.5">
+                  Phone: {businessSettings.phone} | {
+                    !businessSettings.website
+                      ? 'FB: H&J Kitchen'
+                      : businessSettings.website.toLowerCase().includes('fb') || businessSettings.website.toLowerCase().includes('facebook')
+                      ? businessSettings.website
+                      : `FB: ${businessSettings.website}`
+                  }
                 </p>
               </div>
             </div>

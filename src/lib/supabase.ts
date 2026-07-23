@@ -11,7 +11,7 @@ export const DEFAULT_BUSINESS_SETTINGS: BusinessSettings = {
   name: 'H&J Kitchen',
   address: 'No. 45, Galle Road, Colombo 03',
   phone: '+94 77 123 4567',
-  website: 'www.hjkitchen.lk',
+  website: 'FB: H&J Kitchen',
   bank_name: 'Commercial Bank',
   bank_account: '8001234567',
   invoice_note: 'Thank you for your order! For enquiries, please contact us on the number above.',
