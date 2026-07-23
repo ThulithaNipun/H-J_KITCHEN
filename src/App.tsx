@@ -293,7 +293,10 @@ export function App() {
 
   const handleClearAllOrderItems = () => {
     setOrderItems([]);
-    showToast('Current order cleared!');
+    setCustomerName('');
+    setCustomerAddress('');
+    setTableLabel('Table 1');
+    showToast('Current order and customer details cleared!');
   };
 
   const handleUpdateItemNotes = (itemId: string, notes: string) => {

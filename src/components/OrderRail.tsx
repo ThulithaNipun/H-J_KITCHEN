@@ -89,10 +89,10 @@ export const OrderRail: React.FC<OrderRailProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
-            {orderItems.length > 0 && onClearAllItems && (
+            {(orderItems.length > 0 || customerName.trim().length > 0 || customerAddress.trim().length > 0) && onClearAllItems && (
               <button
                 onClick={() => {
-                  if (confirm('Are you sure you want to clear all items from the current order?')) {
+                  if (confirm('Are you sure you want to clear current order items and customer details?')) {
                     onClearAllItems();
                   }
                 }}
@@ -101,7 +101,7 @@ export const OrderRail: React.FC<OrderRailProps> = ({
                     ? 'bg-red-500/10 hover:bg-red-500/20 border-red-500/20 text-red-400'
                     : 'bg-red-50 hover:bg-red-100 border-red-200 text-red-600'
                 }`}
-                title="Clear all items in current order"
+                title="Clear all order items and customer details"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Clear All</span>
