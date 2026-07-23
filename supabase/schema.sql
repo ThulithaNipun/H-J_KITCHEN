@@ -50,17 +50,28 @@ create table if not exists order_items (
   created_at timestamptz not null default now()
 );
 
+-- 5. Customers Table
+create table if not exists customers (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  address text not null,
+  phone text,
+  created_at timestamptz not null default now()
+);
+
 -- Enable Row Level Security (RLS)
 alter table business_settings enable row level security;
 alter table menu_items enable row level security;
 alter table orders enable row level security;
 alter table order_items enable row level security;
+alter table customers enable row level security;
 
 -- Open Access policies for staff POS usage
 create policy "staff full access" on business_settings for all using (true) with check (true);
 create policy "staff full access" on menu_items for all using (true) with check (true);
 create policy "staff full access" on orders for all using (true) with check (true);
 create policy "staff full access" on order_items for all using (true) with check (true);
+create policy "staff full access" on customers for all using (true) with check (true);
 
 -- Seed Business Settings
 insert into business_settings (id, name, address, phone, website, bank_name, bank_account, invoice_note)
