@@ -12,7 +12,7 @@ import { EditMenuItemModal } from './components/EditMenuItemModal';
 import { AddCustomItemModal } from './components/AddCustomItemModal';
 import { OrderHistoryModal } from './components/OrderHistoryModal';
 import { DeleteConfirmationModal } from './components/DeleteConfirmationModal';
-import { Plus, Edit3, Trash2, UtensilsCrossed, CheckCircle2, ShoppingCart } from 'lucide-react';
+import { Edit3, Trash2, UtensilsCrossed, CheckCircle2, ShoppingCart } from 'lucide-react';
 
 import type { MenuItem, OrderItem, BusinessSettings, Order } from './types/pos';
 import {
@@ -371,32 +371,21 @@ export function App() {
           /* Dedicated Menu Management View */
           <div className="flex-1 flex flex-col">
             <div
-              className={`flex items-center justify-between gap-4 mb-5 sm:mb-6 pb-4 border-b ${
+              className={`mb-5 sm:mb-6 pb-4 border-b ${
                 isDark ? 'border-[#242533]' : 'border-slate-200'
               }`}
             >
-              <div>
-                <h2
-                  className={`text-lg sm:text-xl font-bold font-poppins flex items-center gap-2 ${
-                    isDark ? 'text-white' : 'text-slate-900'
-                  }`}
-                >
-                  <UtensilsCrossed className="w-5 h-5 sm:w-6 sm:h-6 text-[#FF5A5F]" />
-                  <span>Menu Management</span>
-                </h2>
-                <p className={`text-xs mt-0.5 font-medium ${isDark ? 'text-[#848796]' : 'text-slate-500'}`}>
-                  Add, edit prices, update categories, or delete dishes from your POS menu
-                </p>
-              </div>
-
-              {/* Single Line Clean Add Dish Button */}
-              <button
-                onClick={() => setIsAddMenuItemModalOpen(true)}
-                className="bg-[#FF5A5F] hover:bg-[#E04C51] text-white font-bold px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-[#FF5A5F]/20 active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+              <h2
+                className={`text-lg sm:text-xl font-bold font-poppins flex items-center gap-2 ${
+                  isDark ? 'text-white' : 'text-slate-900'
+                }`}
               >
-                <Plus className="w-4 h-4" />
-                <span>Add Dish</span>
-              </button>
+                <UtensilsCrossed className="w-5 h-5 sm:w-6 sm:h-6 text-[#FF5A5F]" />
+                <span>Menu Management</span>
+              </h2>
+              <p className={`text-xs mt-0.5 font-medium ${isDark ? 'text-[#848796]' : 'text-slate-500'}`}>
+                Add, edit prices, update categories, or delete dishes from your POS menu
+              </p>
             </div>
 
             {/* Category Filter */}
