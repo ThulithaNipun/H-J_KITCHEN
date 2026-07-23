@@ -17,6 +17,7 @@ interface OrderRailProps {
   setTaxPct: (pct: number) => void;
   onUpdateQty: (itemId: string, delta: number) => void;
   onRemoveItem: (itemId: string) => void;
+  onClearAllItems?: () => void;
   onUpdateItemNotes: (itemId: string, notes: string) => void;
   onOpenAddCustomItem: () => void;
   onOpenInvoiceModal: () => void;
@@ -42,6 +43,7 @@ export const OrderRail: React.FC<OrderRailProps> = ({
   setTaxPct,
   onUpdateQty,
   onRemoveItem,
+  onClearAllItems,
   onUpdateItemNotes,
   onOpenAddCustomItem,
   onOpenInvoiceModal,
@@ -87,6 +89,25 @@ export const OrderRail: React.FC<OrderRailProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
+            {orderItems.length > 0 && onClearAllItems && (
+              <button
+                onClick={() => {
+                  if (confirm('Are you sure you want to clear all items from the current order?')) {
+                    onClearAllItems();
+                  }
+                }}
+                className={`flex items-center gap-1 border text-xs font-semibold px-2.5 py-1.5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm ${
+                  isDark
+                    ? 'bg-red-500/10 hover:bg-red-500/20 border-red-500/20 text-red-400'
+                    : 'bg-red-50 hover:bg-red-100 border-red-200 text-red-600'
+                }`}
+                title="Clear all items in current order"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Clear All</span>
+              </button>
+            )}
+
             <button
               onClick={onOpenAddCustomItem}
               className={`flex items-center gap-1.5 border text-xs font-semibold px-3 py-1.5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm ${

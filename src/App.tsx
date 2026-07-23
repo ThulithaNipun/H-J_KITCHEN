@@ -269,6 +269,11 @@ export function App() {
     setOrderItems((prev) => prev.filter((item) => item.id !== itemId));
   };
 
+  const handleClearAllOrderItems = () => {
+    setOrderItems([]);
+    showToast('Current order cleared!');
+  };
+
   const handleUpdateItemNotes = (itemId: string, notes: string) => {
     setOrderItems((prev) =>
       prev.map((item) => (item.id === itemId ? { ...item, notes } : item))
@@ -591,6 +596,7 @@ export function App() {
         setTaxPct={setTaxPct}
         onUpdateQty={handleUpdateQty}
         onRemoveItem={handleRemoveItem}
+        onClearAllItems={handleClearAllOrderItems}
         onUpdateItemNotes={handleUpdateItemNotes}
         onOpenAddCustomItem={() => setIsAddCustomItemModalOpen(true)}
         onOpenInvoiceModal={handlePrintBillsAndOpenInvoice}
