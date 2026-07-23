@@ -268,7 +268,9 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                       <h2 className="text-base font-extrabold text-[#4E540C]">
                         {businessSettings.name || 'H&J KITCHEN'}
                       </h2>
-                      <p className="text-xs text-[#6B6F4A] font-semibold">{businessSettings.address}</p>
+                      <p className="text-xs text-[#6B6F4A] font-semibold max-w-[210px] ml-auto leading-snug my-0.5">
+                        {businessSettings.address}
+                      </p>
                       <p className="text-xs text-[#6B6F4A] font-semibold">Tel: {businessSettings.phone}</p>
                     </div>
                     <div className="w-24 h-24 bg-white border-2 border-[#4E540C]/20 rounded-2xl p-1.5 flex items-center justify-center shrink-0 shadow-sm">
@@ -281,10 +283,10 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                   </div>
                 </div>
 
-                {/* Top Metadata Block: Invoice Details (Left 2 cols) & Bill To (Right 3 cols) */}
-                <div className="grid grid-cols-5 gap-5 mb-5 text-sm text-[#2B2E12]">
+                {/* Top Metadata Block: Invoice Details (Left) & Bill To (Right) - EQUAL 50/50 GRID */}
+                <div className="grid grid-cols-2 gap-5 mb-5 text-sm text-[#2B2E12]">
                   {/* Left Box: Invoice Details */}
-                  <div className="col-span-2 space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
+                  <div className="space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
                     <h3 className="font-extrabold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1.5 mb-2">
                       Invoice Details
                     </h3>
@@ -298,8 +300,8 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                     </div>
                   </div>
 
-                  {/* Right Box: Bill To (3/5 Width for Maximum Address Space) */}
-                  <div className="col-span-3 space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
+                  {/* Right Box: Bill To */}
+                  <div className="space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
                     <h3 className="font-extrabold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1.5 mb-2">
                       Bill To
                     </h3>
@@ -515,15 +517,15 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                 </div>
               </div>
 
-              {/* Green Footer Banner */}
-              <div className="bg-[#4E540C] text-white p-4 rounded-xl text-center space-y-1 shadow-sm mt-auto">
+              {/* Green Full-Width Footer Banner (Edge-to-Edge with Generous Bottom Padding) */}
+              <div className="bg-[#4E540C] text-white -mx-8 -mb-8 pt-4 pb-6 px-8 rounded-b-xl text-center space-y-1 shadow-sm mt-auto">
                 <h3 className="font-serif italic text-xl text-yellow-200">
                   Thank You & Come Again
                 </h3>
                 <p className="text-xs sm:text-sm font-bold tracking-wider uppercase font-poppins">
                   {businessSettings.name || 'H&J KITCHEN RESTAURANT'}
                 </p>
-                <p className="text-xs text-white/90 font-mono font-medium">
+                <p className="text-xs text-white/90 font-mono font-medium pt-0.5">
                   Phone: {businessSettings.phone} | {businessSettings.website}
                 </p>
               </div>
