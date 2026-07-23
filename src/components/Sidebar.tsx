@@ -1,11 +1,12 @@
 import React from 'react';
-import { Home, UtensilsCrossed, History, Tag, Settings } from 'lucide-react';
+import { Home, UtensilsCrossed, History, Tag, Settings, BookUser } from 'lucide-react';
 
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   openSettings: () => void;
   openHistory: () => void;
+  openAddressBook: () => void;
   theme?: 'dark' | 'light';
 }
 
@@ -14,6 +15,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   setActiveTab,
   openSettings,
   openHistory,
+  openAddressBook,
   theme = 'dark',
 }) => {
   const isDark = theme === 'dark';
@@ -21,8 +23,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const navItems = [
     { id: 'home', label: 'Home', icon: Home, action: () => setActiveTab('home') },
     { id: 'menu', label: 'Menu', icon: UtensilsCrossed, action: () => setActiveTab('menu') },
+    { id: 'addressbook', label: 'Directory', icon: BookUser, action: openAddressBook },
     { id: 'history', label: 'History', icon: History, action: openHistory },
-    { id: 'promos', label: 'Promos', icon: Tag, action: () => setActiveTab('home') },
     { id: 'settings', label: 'Settings', icon: Settings, action: openSettings },
   ];
 

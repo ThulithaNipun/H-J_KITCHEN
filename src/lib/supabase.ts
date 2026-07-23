@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import type { MenuItem, BusinessSettings, Order, OrderItem } from '../types/pos';
+import type { MenuItem, BusinessSettings, Order, OrderItem, Customer } from '../types/pos';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key';
@@ -17,6 +17,30 @@ export const DEFAULT_BUSINESS_SETTINGS: BusinessSettings = {
   invoice_note: 'Thank you for your order! For enquiries, please contact us on the number above.',
   logo_url: '/logo.webp'
 };
+
+export const INITIAL_CUSTOMERS: Customer[] = [
+  {
+    id: 'c1',
+    name: 'Mr. Perera',
+    address: 'No. 45, Galle Road, Colombo 03',
+    phone: '0771234567',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'c2',
+    name: 'Mrs. Silva',
+    address: '12/A, Station Road, Dehiwala',
+    phone: '0719876543',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 'c3',
+    name: 'Nimal Jayasinghe',
+    address: '88, Kandy Road, Kiribathgoda',
+    phone: '0754433221',
+    created_at: new Date().toISOString(),
+  },
+];
 
 export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {

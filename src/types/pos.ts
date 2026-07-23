@@ -45,3 +45,11 @@ export type BusinessSettings = {
   logo_url?: string;
   updated_at?: string;
 };
+
+export type Customer = {
+  id: string;
+  name: string;
+  address: string;
+  phone?: string;
+  created_at?: string;
+};

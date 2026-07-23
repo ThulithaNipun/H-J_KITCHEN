@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Plus, Minus, Printer, PlusCircle, ShoppingBag, X } from 'lucide-react';
-import type { OrderItem } from '../types/pos';
+import { Trash2, Plus, Minus, Printer, PlusCircle, ShoppingBag, X, BookUser, UserCheck, BookmarkPlus } from 'lucide-react';
+import type { OrderItem, Customer } from '../types/pos';
 
 interface OrderRailProps {
   orderItems: OrderItem[];
@@ -20,6 +20,9 @@ interface OrderRailProps {
   onUpdateItemNotes: (itemId: string, notes: string) => void;
   onOpenAddCustomItem: () => void;
   onOpenInvoiceModal: () => void;
+  savedCustomers?: Customer[];
+  onOpenAddressBook?: () => void;
+  onSaveCustomerToDirectory?: (c: { name: string; address: string }) => void;
   theme?: 'dark' | 'light';
   isMobileOpen?: boolean;
   onCloseMobile?: () => void;
@@ -42,10 +45,14 @@ export const OrderRail: React.FC<OrderRailProps> = ({
   onUpdateItemNotes,
   onOpenAddCustomItem,
   onOpenInvoiceModal,
+  savedCustomers = [],
+  onOpenAddressBook,
+  onSaveCustomerToDirectory,
   theme = 'dark',
   isMobileOpen = false,
   onCloseMobile,
 }) => {
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const isDark = theme === 'dark';
 
   const subtotal = orderItems.reduce((acc, item) => acc + item.price * item.qty, 0);
@@ -152,18 +159,36 @@ export const OrderRail: React.FC<OrderRailProps> = ({
               </select>
             </div>
 
-            <div>
-              <label
-                className={`text-[10px] uppercase font-bold tracking-wider block mb-1 ${
-                  isDark ? 'text-[#848796]' : 'text-slate-500'
-                }`}
-              >
-                Customer Name
-              </label>
+            <div className="relative">
+              <div className="flex items-center justify-between mb-1">
+                <label
+                  className={`text-[10px] uppercase font-bold tracking-wider ${
+                    isDark ? 'text-[#848796]' : 'text-slate-500'
+                  }`}
+                >
+                  Customer Name
+                </label>
+                {onOpenAddressBook && (
+                  <button
+                    type="button"
+                    onClick={onOpenAddressBook}
+                    className="flex items-center gap-1 text-[10px] text-[#FF5A5F] hover:underline font-bold"
+                    title="Open Address Book Directory"
+                  >
+                    <BookUser className="w-3 h-3" />
+                    <span>Directory</span>
+                  </button>
+                )}
+              </div>
               <input
                 type="text"
                 value={customerName}
-                onChange={(e) => setCustomerName(e.target.value)}
+                onChange={(e) => {
+                  setCustomerName(e.target.value);
+                  setShowSuggestions(true);
+                }}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                 placeholder="e.g. Mr. Client"
                 className={`w-full text-xs px-2.5 py-1.5 rounded-xl border focus:outline-none focus:border-[#FF5A5F] font-medium ${
                   isDark
@@ -171,17 +196,70 @@ export const OrderRail: React.FC<OrderRailProps> = ({
                     : 'bg-slate-50 text-slate-800 border-slate-200 placeholder-slate-400'
                 }`}
               />
+
+              {/* Auto-Suggest Dropdown List */}
+              {showSuggestions && savedCustomers.length > 0 && customerName.trim().length > 0 && (
+                <div
+                  className={`absolute left-0 right-0 top-full mt-1 z-30 max-h-48 overflow-y-auto rounded-2xl shadow-xl border p-1 font-sans ${
+                    isDark ? 'bg-[#1F202C] border-[#282937] text-white' : 'bg-white border-slate-200 text-slate-900'
+                  }`}
+                >
+                  {savedCustomers
+                    .filter((c) => c.name.toLowerCase().includes(customerName.toLowerCase()))
+                    .slice(0, 5)
+                    .map((c) => (
+                      <button
+                        key={c.id}
+                        type="button"
+                        onClick={() => {
+                          setCustomerName(c.name);
+                          setCustomerAddress(c.address);
+                          setShowSuggestions(false);
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-xs flex flex-col gap-0.5 transition-colors ${
+                          isDark ? 'hover:bg-white/10' : 'hover:bg-slate-100'
+                        }`}
+                      >
+                        <span className="font-bold text-[#FF5A5F]">{c.name}</span>
+                        <span className={`text-[10px] truncate ${isDark ? 'text-[#848796]' : 'text-slate-500'}`}>
+                          {c.address}
+                        </span>
+                      </button>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
 
           <div>
-            <label
-              className={`text-[10px] uppercase font-bold tracking-wider block mb-1 ${
-                isDark ? 'text-[#848796]' : 'text-slate-500'
-              }`}
-            >
-              Customer Address
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label
+                className={`text-[10px] uppercase font-bold tracking-wider ${
+                  isDark ? 'text-[#848796]' : 'text-slate-500'
+                }`}
+              >
+                Customer Address
+              </label>
+              {onSaveCustomerToDirectory &&
+                customerName.trim().length > 1 &&
+                customerAddress.trim().length > 3 &&
+                !savedCustomers.some((c) => c.name.toLowerCase() === customerName.toLowerCase()) && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onSaveCustomerToDirectory({
+                        name: customerName.trim(),
+                        address: customerAddress.trim(),
+                      })
+                    }
+                    className="flex items-center gap-1 text-[10px] text-emerald-400 hover:underline font-bold"
+                    title="Save current customer to directory"
+                  >
+                    <BookmarkPlus className="w-3 h-3" />
+                    <span>Save to Directory</span>
+                  </button>
+                )}
+            </div>
             <input
               type="text"
               value={customerAddress}

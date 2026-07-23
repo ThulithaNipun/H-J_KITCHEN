@@ -14,10 +14,12 @@ import { OrderHistoryModal } from './components/OrderHistoryModal';
 import { DeleteConfirmationModal } from './components/DeleteConfirmationModal';
 import { Edit3, Trash2, UtensilsCrossed, CheckCircle2, ShoppingCart } from 'lucide-react';
 
-import type { MenuItem, OrderItem, BusinessSettings, Order } from './types/pos';
+import type { MenuItem, OrderItem, BusinessSettings, Order, Customer } from './types/pos';
+import { AddressBookModal } from './components/AddressBookModal';
 import {
   DEFAULT_BUSINESS_SETTINGS,
   INITIAL_MENU_ITEMS,
+  INITIAL_CUSTOMERS,
   fetchMenuItems,
   fetchBusinessSettings,
   saveOrderToSupabase,
@@ -87,6 +89,43 @@ export function App() {
   const [editingMenuItem, setEditingMenuItem] = useState<MenuItem | null>(null);
   const [deletingMenuItem, setDeletingMenuItem] = useState<MenuItem | null>(null);
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+  const [isAddressBookModalOpen, setIsAddressBookModalOpen] = useState(false);
+
+  // Saved Customers Directory State
+  const [customers, setCustomers] = useState<Customer[]>(() => {
+    const saved = localStorage.getItem('hj_saved_customers');
+    return saved ? JSON.parse(saved) : INITIAL_CUSTOMERS;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('hj_saved_customers', JSON.stringify(customers));
+  }, [customers]);
+
+  const handleAddCustomer = (c: Omit<Customer, 'id'>) => {
+    const newCustomer: Customer = {
+      ...c,
+      id: `c_${Date.now()}`,
+      created_at: new Date().toISOString(),
+    };
+    setCustomers((prev) => [newCustomer, ...prev]);
+    showToast(`Saved "${newCustomer.name}" to directory!`);
+  };
+
+  const handleEditCustomer = (updated: Customer) => {
+    setCustomers((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
+    showToast(`Updated "${updated.name}"!`);
+  };
+
+  const handleDeleteCustomer = (id: string) => {
+    setCustomers((prev) => prev.filter((c) => c.id !== id));
+    showToast('Customer deleted from directory!');
+  };
+
+  const handleSelectCustomerForOrder = (customer: Customer) => {
+    setCustomerName(customer.name);
+    setCustomerAddress(customer.address);
+    showToast(`Applied ${customer.name}'s details!`);
+  };
 
   // Order History State
   const [orderHistory, setOrderHistory] = useState<Order[]>(() => {
@@ -348,6 +387,7 @@ export function App() {
         setActiveTab={setActiveNavTab}
         openSettings={() => setIsSettingsModalOpen(true)}
         openHistory={() => setIsHistoryModalOpen(true)}
+        openAddressBook={() => setIsAddressBookModalOpen(true)}
         theme={theme}
       />
 
@@ -541,12 +581,26 @@ export function App() {
         onUpdateItemNotes={handleUpdateItemNotes}
         onOpenAddCustomItem={() => setIsAddCustomItemModalOpen(true)}
         onOpenInvoiceModal={handlePrintBillsAndOpenInvoice}
+        savedCustomers={customers}
+        onOpenAddressBook={() => setIsAddressBookModalOpen(true)}
+        onSaveCustomerToDirectory={handleAddCustomer}
         theme={theme}
         isMobileOpen={isMobileOrderOpen}
         onCloseMobile={() => setIsMobileOrderOpen(false)}
       />
 
       {/* 5. Modals */}
+      <AddressBookModal
+        isOpen={isAddressBookModalOpen}
+        onClose={() => setIsAddressBookModalOpen(false)}
+        customers={customers}
+        onAddCustomer={handleAddCustomer}
+        onEditCustomer={handleEditCustomer}
+        onDeleteCustomer={handleDeleteCustomer}
+        onSelectCustomer={handleSelectCustomerForOrder}
+        theme={theme}
+      />
+
       <InvoiceModal
         isOpen={isInvoiceModalOpen}
         onClose={() => setIsInvoiceModalOpen(false)}
