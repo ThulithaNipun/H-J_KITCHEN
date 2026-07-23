@@ -5,6 +5,7 @@ interface CategoryTabsProps {
   categories: string[];
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
+  theme?: 'dark' | 'light';
 }
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -19,7 +20,9 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
   categories,
   selectedCategory,
   setSelectedCategory,
+  theme = 'dark',
 }) => {
+  const isDark = theme === 'dark';
   const allCategories = ['All Items', ...categories];
 
   return (
@@ -32,10 +35,14 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
           <button
             key={category}
             onClick={() => setSelectedCategory(category)}
-            className={`relative flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-semibold transition-all shrink-0 border ${
+            className={`relative flex items-center gap-2.5 px-5 py-3 rounded-2xl text-xs font-semibold transition-all shrink-0 border cursor-pointer ${
               isSelected
-                ? 'border-[#FF5A5F] text-white bg-[#1F202C]'
-                : 'border-[#282937] text-[#848796] bg-[#1F202C] hover:bg-[#262737] hover:text-white'
+                ? isDark
+                  ? 'border-[#FF5A5F] text-white bg-[#1F202C]'
+                  : 'border-[#FF5A5F] text-slate-900 bg-white shadow-sm'
+                : isDark
+                ? 'border-[#282937] text-[#848796] bg-[#1F202C] hover:bg-[#262737] hover:text-white'
+                : 'border-slate-200 text-slate-600 bg-white hover:bg-slate-50 hover:text-slate-900 shadow-sm'
             }`}
           >
             <span className="text-sm leading-none">{icon}</span>

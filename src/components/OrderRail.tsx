@@ -20,6 +20,7 @@ interface OrderRailProps {
   onUpdateItemNotes: (itemId: string, notes: string) => void;
   onOpenAddCustomItem: () => void;
   onOpenInvoiceModal: () => void;
+  theme?: 'dark' | 'light';
 }
 
 export const OrderRail: React.FC<OrderRailProps> = ({
@@ -39,27 +40,52 @@ export const OrderRail: React.FC<OrderRailProps> = ({
   onUpdateItemNotes,
   onOpenAddCustomItem,
   onOpenInvoiceModal,
+  theme = 'dark',
 }) => {
+  const isDark = theme === 'dark';
+
   const subtotal = orderItems.reduce((acc, item) => acc + item.price * item.qty, 0);
   const discountAmount = (subtotal * discountPct) / 100;
   const taxAmount = ((subtotal - discountAmount) * taxPct) / 100;
   const grandTotal = subtotal - discountAmount + taxAmount;
 
   return (
-    <aside className="w-96 bg-[#191A25] border-l border-[#242533] flex flex-col h-screen select-none shrink-0">
+    <aside
+      className={`w-96 border-l flex flex-col h-screen select-none shrink-0 transition-colors ${
+        isDark
+          ? 'bg-[#191A25] border-[#242533]'
+          : 'bg-white border-slate-200 shadow-sm'
+      }`}
+    >
       {/* Order Rail Header */}
-      <div className="p-5 border-b border-[#242533] bg-[#191A25]">
+      <div
+        className={`p-5 border-b ${
+          isDark ? 'border-[#242533] bg-[#191A25]' : 'border-slate-200 bg-white'
+        }`}
+      >
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h2 className="text-xl font-bold text-white font-poppins">Order</h2>
+            <h2
+              className={`text-xl font-bold font-poppins ${
+                isDark ? 'text-white' : 'text-slate-900'
+              }`}
+            >
+              Order
+            </h2>
             <div className="flex items-center gap-2 mt-0.5">
-              <span className="text-xs text-[#848796] font-medium">{tableLabel}</span>
+              <span className={`text-xs font-medium ${isDark ? 'text-[#848796]' : 'text-slate-500'}`}>
+                {tableLabel}
+              </span>
             </div>
           </div>
 
           <button
             onClick={onOpenAddCustomItem}
-            className="flex items-center gap-1.5 bg-[#262737] hover:bg-[#2F3045] border border-[#282937] text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm"
+            className={`flex items-center gap-1.5 border text-xs font-semibold px-3.5 py-2 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm ${
+              isDark
+                ? 'bg-[#262737] hover:bg-[#2F3045] border-[#282937] text-white'
+                : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800'
+            }`}
           >
             <PlusCircle className="w-4 h-4 text-[#FF5A5F]" />
             <span>Add-On</span>
@@ -70,26 +96,52 @@ export const OrderRail: React.FC<OrderRailProps> = ({
         <div className="space-y-2 mt-3">
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[10px] uppercase font-bold text-[#848796] tracking-wider block mb-1">
+              <label
+                className={`text-[10px] uppercase font-bold tracking-wider block mb-1 ${
+                  isDark ? 'text-[#848796]' : 'text-slate-500'
+                }`}
+              >
                 Table / Order
               </label>
               <select
                 value={tableLabel}
                 onChange={(e) => setTableLabel(e.target.value)}
-                className="w-full bg-[#1F202C] text-white text-xs px-2.5 py-1.5 rounded-xl border border-[#282937] focus:outline-none focus:border-[#FF5A5F] font-medium"
+                className={`w-full text-xs px-2.5 py-1.5 rounded-xl border focus:outline-none focus:border-[#FF5A5F] font-medium ${
+                  isDark
+                    ? 'bg-[#1F202C] text-white border-[#282937]'
+                    : 'bg-slate-50 text-slate-800 border-slate-200'
+                }`}
               >
-                <option value="Table 1" className="bg-[#191A25] text-white py-2">Table 1</option>
-                <option value="Table 2" className="bg-[#191A25] text-white py-2">Table 2</option>
-                <option value="Table 3" className="bg-[#191A25] text-white py-2">Table 3</option>
-                <option value="Table 4" className="bg-[#191A25] text-white py-2">Table 4</option>
-                <option value="Table 5" className="bg-[#191A25] text-white py-2">Table 5</option>
-                <option value="Takeaway" className="bg-[#191A25] text-white py-2">Takeaway</option>
-                <option value="Parcel" className="bg-[#191A25] text-white py-2">Parcel</option>
+                <option value="Table 1" className={isDark ? 'bg-[#191A25] text-white py-2' : 'bg-white text-slate-900'}>
+                  Table 1
+                </option>
+                <option value="Table 2" className={isDark ? 'bg-[#191A25] text-white py-2' : 'bg-white text-slate-900'}>
+                  Table 2
+                </option>
+                <option value="Table 3" className={isDark ? 'bg-[#191A25] text-white py-2' : 'bg-white text-slate-900'}>
+                  Table 3
+                </option>
+                <option value="Table 4" className={isDark ? 'bg-[#191A25] text-white py-2' : 'bg-white text-slate-900'}>
+                  Table 4
+                </option>
+                <option value="Table 5" className={isDark ? 'bg-[#191A25] text-white py-2' : 'bg-white text-slate-900'}>
+                  Table 5
+                </option>
+                <option value="Takeaway" className={isDark ? 'bg-[#191A25] text-white py-2' : 'bg-white text-slate-900'}>
+                  Takeaway
+                </option>
+                <option value="Parcel" className={isDark ? 'bg-[#191A25] text-white py-2' : 'bg-white text-slate-900'}>
+                  Parcel
+                </option>
               </select>
             </div>
 
             <div>
-              <label className="text-[10px] uppercase font-bold text-[#848796] tracking-wider block mb-1">
+              <label
+                className={`text-[10px] uppercase font-bold tracking-wider block mb-1 ${
+                  isDark ? 'text-[#848796]' : 'text-slate-500'
+                }`}
+              >
                 Customer Name
               </label>
               <input
@@ -97,13 +149,21 @@ export const OrderRail: React.FC<OrderRailProps> = ({
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
                 placeholder="e.g. Mr. Client"
-                className="w-full bg-[#1F202C] text-white text-xs px-2.5 py-1.5 rounded-xl border border-[#282937] focus:outline-none focus:border-[#FF5A5F] font-medium placeholder-[#848796]/50"
+                className={`w-full text-xs px-2.5 py-1.5 rounded-xl border focus:outline-none focus:border-[#FF5A5F] font-medium ${
+                  isDark
+                    ? 'bg-[#1F202C] text-white border-[#282937] placeholder-[#848796]/50'
+                    : 'bg-slate-50 text-slate-800 border-slate-200 placeholder-slate-400'
+                }`}
               />
             </div>
           </div>
 
           <div>
-            <label className="text-[10px] uppercase font-bold text-[#848796] tracking-wider block mb-1">
+            <label
+              className={`text-[10px] uppercase font-bold tracking-wider block mb-1 ${
+                isDark ? 'text-[#848796]' : 'text-slate-500'
+              }`}
+            >
               Customer Address
             </label>
             <input
@@ -111,7 +171,11 @@ export const OrderRail: React.FC<OrderRailProps> = ({
               value={customerAddress}
               onChange={(e) => setCustomerAddress(e.target.value)}
               placeholder="e.g. No. 12, Galle Road, Colombo 03"
-              className="w-full bg-[#1F202C] text-white text-xs px-2.5 py-1.5 rounded-xl border border-[#282937] focus:outline-none focus:border-[#FF5A5F] font-medium placeholder-[#848796]/50"
+              className={`w-full text-xs px-2.5 py-1.5 rounded-xl border focus:outline-none focus:border-[#FF5A5F] font-medium ${
+                isDark
+                  ? 'bg-[#1F202C] text-white border-[#282937] placeholder-[#848796]/50'
+                  : 'bg-slate-50 text-slate-800 border-slate-200 placeholder-slate-400'
+              }`}
             />
           </div>
         </div>
@@ -120,10 +184,10 @@ export const OrderRail: React.FC<OrderRailProps> = ({
       {/* Order Items Scrollable Container */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {orderItems.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center p-6 text-[#848796]/50">
+          <div className={`h-full flex flex-col items-center justify-center text-center p-6 ${isDark ? 'text-[#848796]/50' : 'text-slate-400'}`}>
             <ShoppingBag className="w-12 h-12 mb-3 stroke-[1.5]" />
             <p className="text-sm font-medium">No items in current order</p>
-            <p className="text-xs mt-1 text-[#848796]/40">Select dishes from the menu grid to add</p>
+            <p className="text-xs mt-1 opacity-70">Select dishes from the menu grid to add</p>
           </div>
         ) : (
           <AnimatePresence initial={false}>
@@ -135,12 +199,16 @@ export const OrderRail: React.FC<OrderRailProps> = ({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, x: -30, scale: 0.9 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                className="bg-[#1F202C] border border-[#282937] p-3.5 rounded-2xl flex flex-col gap-2 relative group shadow-md"
+                className={`border p-3.5 rounded-2xl flex flex-col gap-2 relative group shadow-sm ${
+                  isDark
+                    ? 'bg-[#1F202C] border-[#282937]'
+                    : 'bg-slate-50 border-slate-200'
+                }`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-xs font-semibold text-white truncate">
-                      {item.name} <span className="text-[#848796] font-mono">({item.qty}x)</span>
+                    <h4 className={`text-xs font-semibold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                      {item.name} <span className={`font-mono ${isDark ? 'text-[#848796]' : 'text-slate-500'}`}>({item.qty}x)</span>
                     </h4>
                     <span className="text-xs font-bold text-[#FF5A5F] font-poppins block mt-0.5">
                       Rs. {(item.price * item.qty).toFixed(2)}
@@ -149,7 +217,9 @@ export const OrderRail: React.FC<OrderRailProps> = ({
 
                   <button
                     onClick={() => onRemoveItem(item.id)}
-                    className="text-[#848796] hover:text-[#FF5A5F] p-1 rounded-lg hover:bg-white/5 transition-colors"
+                    className={`p-1 rounded-lg transition-colors ${
+                      isDark ? 'text-[#848796] hover:text-[#FF5A5F] hover:bg-white/5' : 'text-slate-400 hover:text-red-500 hover:bg-slate-200/50'
+                    }`}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -161,19 +231,23 @@ export const OrderRail: React.FC<OrderRailProps> = ({
                   value={item.notes || ''}
                   onChange={(e) => onUpdateItemNotes(item.id, e.target.value)}
                   placeholder="Note (e.g. Extra spicy, No onion)..."
-                  className="w-full bg-[#181924] text-[11px] text-[#848796] placeholder-[#848796]/40 px-2 py-1 rounded-lg border border-[#282937] focus:outline-none focus:border-[#FF5A5F]/50"
+                  className={`w-full text-[11px] px-2 py-1 rounded-lg border focus:outline-none focus:border-[#FF5A5F]/50 ${
+                    isDark
+                      ? 'bg-[#181924] text-[#848796] placeholder-[#848796]/40 border-[#282937]'
+                      : 'bg-white text-slate-700 placeholder-slate-400 border-slate-200'
+                  }`}
                 />
 
                 {/* Quantity Modifiers */}
-                <div className="flex items-center justify-between pt-1 border-t border-[#282937]">
-                  <span className="text-[10px] text-[#848796] font-mono">
+                <div className={`flex items-center justify-between pt-1 border-t ${isDark ? 'border-[#282937]' : 'border-slate-200'}`}>
+                  <span className={`text-[10px] font-mono ${isDark ? 'text-[#848796]' : 'text-slate-500'}`}>
                     Rs. {item.price.toFixed(2)} each
                   </span>
 
-                  <div className="flex items-center gap-2 bg-[#181924] px-2 py-1 rounded-xl border border-[#282937]">
+                  <div className={`flex items-center gap-2 px-2 py-1 rounded-xl border ${isDark ? 'bg-[#181924] border-[#282937]' : 'bg-white border-slate-200'}`}>
                     <button
                       onClick={() => onUpdateQty(item.id, -1)}
-                      className="text-[#848796] hover:text-white transition-colors active:scale-75"
+                      className={`transition-colors active:scale-75 ${isDark ? 'text-[#848796] hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
                     >
                       <Minus className="w-3 h-3" />
                     </button>
@@ -182,14 +256,14 @@ export const OrderRail: React.FC<OrderRailProps> = ({
                       key={item.qty}
                       initial={{ scale: 1.3 }}
                       animate={{ scale: 1 }}
-                      className="text-xs font-bold text-white min-w-4 text-center font-mono block"
+                      className={`text-xs font-bold min-w-4 text-center font-mono block ${isDark ? 'text-white' : 'text-slate-900'}`}
                     >
                       {item.qty}
                     </motion.span>
 
                     <button
                       onClick={() => onUpdateQty(item.id, 1)}
-                      className="text-[#848796] hover:text-white transition-colors active:scale-75"
+                      className={`transition-colors active:scale-75 ${isDark ? 'text-[#848796] hover:text-white' : 'text-slate-500 hover:text-slate-900'}`}
                     >
                       <Plus className="w-3 h-3" />
                     </button>
@@ -202,14 +276,14 @@ export const OrderRail: React.FC<OrderRailProps> = ({
       </div>
 
       {/* Pinned Order Summary & Big Print Button Footer */}
-      <div className="p-5 border-t border-[#242533] bg-[#191A25] flex flex-col gap-3">
-        <div className="space-y-2 text-xs bg-[#1F202C] p-4 rounded-2xl border border-[#282937]">
-          <div className="flex items-center justify-between text-[#848796]">
+      <div className={`p-5 border-t flex flex-col gap-3 ${isDark ? 'border-[#242533] bg-[#191A25]' : 'border-slate-200 bg-white'}`}>
+        <div className={`space-y-2 text-xs p-4 rounded-2xl border ${isDark ? 'bg-[#1F202C] border-[#282937]' : 'bg-slate-50 border-slate-200'}`}>
+          <div className={`flex items-center justify-between ${isDark ? 'text-[#848796]' : 'text-slate-600'}`}>
             <span>Sub Total</span>
-            <span className="font-mono font-bold text-white">Rs. {subtotal.toFixed(2)}</span>
+            <span className={`font-mono font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Rs. {subtotal.toFixed(2)}</span>
           </div>
 
-          <div className="flex items-center justify-between text-[#848796]">
+          <div className={`flex items-center justify-between ${isDark ? 'text-[#848796]' : 'text-slate-600'}`}>
             <span className="flex items-center gap-1">
               Discount
               <input
@@ -218,14 +292,16 @@ export const OrderRail: React.FC<OrderRailProps> = ({
                 max="100"
                 value={discountPct}
                 onChange={(e) => setDiscountPct(Number(e.target.value))}
-                className="w-10 bg-[#181924] text-center text-xs text-white rounded border border-[#282937] py-0.5 focus:outline-none focus:border-[#FF5A5F]"
+                className={`w-10 text-center text-xs rounded border py-0.5 focus:outline-none focus:border-[#FF5A5F] ${
+                  isDark ? 'bg-[#181924] text-white border-[#282937]' : 'bg-white text-slate-900 border-slate-300'
+                }`}
               />
               %
             </span>
             <span className="font-mono text-[#FF5A5F]">- Rs. {discountAmount.toFixed(2)}</span>
           </div>
 
-          <div className="flex items-center justify-between text-[#848796]">
+          <div className={`flex items-center justify-between ${isDark ? 'text-[#848796]' : 'text-slate-600'}`}>
             <span className="flex items-center gap-1">
               Tax
               <input
@@ -234,16 +310,18 @@ export const OrderRail: React.FC<OrderRailProps> = ({
                 max="100"
                 value={taxPct}
                 onChange={(e) => setTaxPct(Number(e.target.value))}
-                className="w-10 bg-[#181924] text-center text-xs text-white rounded border border-[#282937] py-0.5 focus:outline-none focus:border-[#FF5A5F]"
+                className={`w-10 text-center text-xs rounded border py-0.5 focus:outline-none focus:border-[#FF5A5F] ${
+                  isDark ? 'bg-[#181924] text-white border-[#282937]' : 'bg-white text-slate-900 border-slate-300'
+                }`}
               />
               %
             </span>
-            <span className="font-mono text-white">+ Rs. {taxAmount.toFixed(2)}</span>
+            <span className={`font-mono ${isDark ? 'text-white' : 'text-slate-900'}`}>+ Rs. {taxAmount.toFixed(2)}</span>
           </div>
 
-          <div className="border-t border-dashed border-[#282937] pt-2 flex items-center justify-between text-sm font-bold text-white">
+          <div className={`border-t border-dashed pt-2 flex items-center justify-between text-sm font-bold ${isDark ? 'border-[#282937] text-white' : 'border-slate-300 text-slate-900'}`}>
             <span className="font-poppins">Total</span>
-            <span className="font-poppins text-lg text-white font-black">Rs. {grandTotal.toFixed(2)}</span>
+            <span className="font-poppins text-lg font-black">Rs. {grandTotal.toFixed(2)}</span>
           </div>
         </div>
 

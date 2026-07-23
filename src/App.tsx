@@ -30,6 +30,20 @@ import {
 } from './lib/supabase';
 
 export function App() {
+  // Theme State: 'dark' or 'light'
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('hj_theme');
+    return saved === 'light' ? 'light' : 'dark';
+  });
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  useEffect(() => {
+    localStorage.setItem('hj_theme', theme);
+  }, [theme]);
+
   // Business Settings State
   const [businessSettings, setBusinessSettings] = useState<BusinessSettings>(() => {
     const saved = localStorage.getItem('hj_business_settings');
@@ -76,6 +90,8 @@ export function App() {
     const saved = localStorage.getItem('hj_order_history');
     return saved ? JSON.parse(saved) : [];
   });
+
+  const isDark = theme === 'dark';
 
   // Supabase Backend Sync on Load
   useEffect(() => {
@@ -291,7 +307,11 @@ export function App() {
   };
 
   return (
-    <div className="flex h-screen bg-[#14151D] text-white overflow-hidden font-inter relative">
+    <div
+      className={`flex h-screen overflow-hidden font-inter relative transition-colors duration-300 ${
+        isDark ? 'bg-[#14151D] text-white' : 'bg-[#F4F5F9] text-slate-800'
+      }`}
+    >
       {/* Toast Notification Alert */}
       <AnimatePresence>
         {toastMessage && (
@@ -313,28 +333,43 @@ export function App() {
         setActiveTab={setActiveNavTab}
         openSettings={() => setIsSettingsModalOpen(true)}
         openHistory={() => setIsHistoryModalOpen(true)}
+        theme={theme}
       />
 
       {/* 2. Main Workspace */}
-      <main className="flex-1 flex flex-col p-6 overflow-y-auto min-w-0 bg-[#14151D]">
+      <main
+        className={`flex-1 flex flex-col p-6 overflow-y-auto min-w-0 transition-colors ${
+          isDark ? 'bg-[#14151D]' : 'bg-[#F4F5F9]'
+        }`}
+      >
         <HeaderBar
           businessSettings={businessSettings}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           openAddMenuItemModal={() => setIsAddMenuItemModalOpen(true)}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
 
         {/* View Switcher based on Sidebar Navigation */}
         {activeNavTab === 'menu' ? (
           /* Dedicated Menu Management View */
           <div className="flex-1 flex flex-col">
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#242533]">
+            <div
+              className={`flex items-center justify-between mb-6 pb-4 border-b ${
+                isDark ? 'border-[#242533]' : 'border-slate-200'
+              }`}
+            >
               <div>
-                <h2 className="text-xl font-bold text-white font-poppins flex items-center gap-2">
+                <h2
+                  className={`text-xl font-bold font-poppins flex items-center gap-2 ${
+                    isDark ? 'text-white' : 'text-slate-900'
+                  }`}
+                >
                   <UtensilsCrossed className="w-6 h-6 text-[#FF5A5F]" />
                   <span>Menu Management</span>
                 </h2>
-                <p className="text-xs text-[#848796] mt-1 font-medium">
+                <p className={`text-xs mt-1 font-medium ${isDark ? 'text-[#848796]' : 'text-slate-500'}`}>
                   Add, edit prices, update categories, or delete dishes from your POS menu
                 </p>
               </div>
@@ -353,6 +388,7 @@ export function App() {
               categories={categories}
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
+              theme={theme}
             />
 
             {/* Menu Items Grid */}
@@ -365,11 +401,22 @@ export function App() {
               {filteredMenuItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-[#1F202C] hover:bg-[#262737] rounded-2xl p-4 flex flex-col justify-between shadow-lg shadow-black/20 transition-all duration-200"
+                  className={`rounded-2xl p-4 flex flex-col justify-between transition-all duration-200 border ${
+                    isDark
+                      ? 'bg-[#1F202C] hover:bg-[#262737] border-[#282937] shadow-lg shadow-black/20 text-white'
+                      : 'bg-white hover:bg-slate-50 border-slate-200 shadow-md shadow-slate-200/50 text-slate-800'
+                  }`}
                 >
-                  <div className="relative w-full h-32 rounded-xl overflow-hidden mb-3 bg-[#181924]">
+                  <div
+                    className={`relative w-full h-32 rounded-xl overflow-hidden mb-3 ${
+                      isDark ? 'bg-[#181924]' : 'bg-slate-100'
+                    }`}
+                  >
                     <img
-                      src={item.image_url || 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=500&q=80'}
+                      src={
+                        item.image_url ||
+                        'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=500&q=80'
+                      }
                       alt={item.name}
                       className="w-full h-full object-cover"
                     />
@@ -379,16 +426,20 @@ export function App() {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-sm text-white line-clamp-1">{item.name}</h3>
+                    <h3 className={`font-semibold text-sm line-clamp-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                      {item.name}
+                    </h3>
                     <span className="text-base font-bold text-[#FF5A5F] font-poppins block mt-1">
                       Rs. {item.price.toFixed(2)}
                     </span>
                   </div>
 
-                  <div className="flex gap-2 mt-4 pt-3 border-t border-[#282937]">
+                  <div className={`flex gap-2 mt-4 pt-3 border-t ${isDark ? 'border-[#282937]' : 'border-slate-200'}`}>
                     <button
                       onClick={() => handleOpenEditMenuItem(item)}
-                      className="flex-1 bg-[#181924] hover:bg-white/10 text-white text-xs font-semibold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      className={`flex-1 text-xs font-semibold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
+                        isDark ? 'bg-[#181924] hover:bg-white/10 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
+                      }`}
                     >
                       <Edit3 className="w-3.5 h-3.5 text-[#FF5A5F]" />
                       <span>Edit</span>
@@ -413,14 +464,21 @@ export function App() {
               categories={categories}
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
+              theme={theme}
             />
 
             <div className="flex-1">
               {filteredMenuItems.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 text-center text-[#848796]">
+                <div
+                  className={`flex flex-col items-center justify-center py-20 text-center ${
+                    isDark ? 'text-[#848796]' : 'text-slate-400'
+                  }`}
+                >
                   <span className="text-4xl mb-3">🔍</span>
-                  <h3 className="text-base font-semibold text-white">No dishes found</h3>
-                  <p className="text-xs mt-1 text-[#848796]/70">
+                  <h3 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>
+                    No dishes found
+                  </h3>
+                  <p className="text-xs mt-1 opacity-70">
                     Try searching for something else or pick another category
                   </p>
                 </div>
@@ -437,6 +495,7 @@ export function App() {
                       item={item}
                       onAddToCart={handleAddToCart}
                       onEditItem={handleOpenEditMenuItem}
+                      theme={theme}
                     />
                   ))}
                 </motion.div>
@@ -464,6 +523,7 @@ export function App() {
         onUpdateItemNotes={handleUpdateItemNotes}
         onOpenAddCustomItem={() => setIsAddCustomItemModalOpen(true)}
         onOpenInvoiceModal={handlePrintBillsAndOpenInvoice}
+        theme={theme}
       />
 
       {/* 4. Modals */}

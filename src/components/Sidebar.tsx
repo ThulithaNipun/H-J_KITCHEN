@@ -6,6 +6,7 @@ interface SidebarProps {
   setActiveTab: (tab: string) => void;
   openSettings: () => void;
   openHistory: () => void;
+  theme?: 'dark' | 'light';
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -13,7 +14,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   setActiveTab,
   openSettings,
   openHistory,
+  theme = 'dark',
 }) => {
+  const isDark = theme === 'dark';
+
   const navItems = [
     { id: 'home', label: 'Home', icon: Home, action: () => setActiveTab('home') },
     { id: 'menu', label: 'Menu', icon: UtensilsCrossed, action: () => setActiveTab('menu') },
@@ -23,20 +27,32 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="w-24 bg-[#181924] border-r border-[#242533] flex flex-col items-center py-6 select-none shrink-0 min-h-screen">
+    <aside
+      className={`w-24 border-r flex flex-col items-center py-6 select-none shrink-0 min-h-screen transition-colors ${
+        isDark
+          ? 'bg-[#181924] border-[#242533]'
+          : 'bg-white border-slate-200 shadow-sm'
+      }`}
+    >
       {/* Brand Logo Badge - Clean White Container for Logo.webp */}
-      <div 
+      <div
         onClick={() => setActiveTab('home')}
         className="mb-8 flex flex-col items-center gap-1.5 cursor-pointer group"
       >
-        <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center p-1.5 shadow-md group-hover:scale-105 transition-transform border border-white/20">
-          <img 
-            src="/logo.webp" 
-            alt="H&J Kitchen" 
+        <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center p-1.5 shadow-md group-hover:scale-105 transition-transform border border-slate-200">
+          <img
+            src="/logo.webp"
+            alt="H&J Kitchen"
             className="w-full h-full object-contain"
           />
         </div>
-        <span className="text-[10px] font-bold text-white tracking-tight">H&J POS</span>
+        <span
+          className={`text-[10px] font-bold tracking-tight ${
+            isDark ? 'text-white' : 'text-slate-800'
+          }`}
+        >
+          H&J POS
+        </span>
       </div>
 
       {/* Navigation Buttons */}
@@ -48,13 +64,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               key={item.id}
               onClick={item.action}
-              className={`flex flex-col items-center justify-center py-3 px-2 rounded-2xl transition-all duration-200 group relative ${
+              className={`flex flex-col items-center justify-center py-3 px-2 rounded-2xl transition-all duration-200 group relative cursor-pointer ${
                 isActive
                   ? 'bg-[#FF5A5F] text-white shadow-lg shadow-[#FF5A5F]/25'
-                  : 'text-[#848796] hover:text-white hover:bg-white/5'
+                  : isDark
+                  ? 'text-[#848796] hover:text-white hover:bg-white/5'
+                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
-              <Icon className={`w-5 h-5 mb-1 transition-transform group-hover:scale-110 ${isActive ? 'scale-105' : ''}`} />
+              <Icon
+                className={`w-5 h-5 mb-1 transition-transform group-hover:scale-110 ${
+                  isActive ? 'scale-105' : ''
+                }`}
+              />
               <span className="text-[10px] font-semibold tracking-wide">{item.label}</span>
             </button>
           );
@@ -62,7 +84,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </nav>
 
       {/* Footer Version Tag */}
-      <div className="mt-auto pt-6 text-[9px] text-[#848796]/50 text-center font-mono">
+      <div
+        className={`mt-auto pt-6 text-[9px] text-center font-mono ${
+          isDark ? 'text-[#848796]/50' : 'text-slate-400'
+        }`}
+      >
         POS v2.0
       </div>
     </aside>
