@@ -16,7 +16,7 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState<number | ''>(100);
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState<number | ''>(1);
 
   if (!isOpen) return null;
 
@@ -24,11 +24,14 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
     e.preventDefault();
     if (!name.trim()) return;
 
+    const finalQty = qty === '' || Number(qty) <= 0 ? 1 : Number(qty);
+    const finalPrice = price === '' || Number(price) < 0 ? 0 : Number(price);
+
     const newItem: OrderItem = {
       id: 'custom-' + Date.now(),
       name: name.trim(),
-      qty: Number(qty) > 0 ? Number(qty) : 1,
-      price: Number(price) >= 0 ? Number(price) : 0,
+      qty: finalQty,
+      price: finalPrice,
     };
 
     onAddCustomItem(newItem);
@@ -91,6 +94,7 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
                   min="0"
                   step="5"
                   value={price}
+                  onFocus={(e) => e.target.select()}
                   onChange={(e) => setPrice(e.target.value === '' ? '' : Number(e.target.value))}
                   placeholder="100"
                   className="w-full bg-[#181924] text-white text-xs px-3.5 py-2.5 rounded-xl border border-[#282937] focus:outline-none focus:border-[#FF5A5F] font-mono font-bold"
@@ -106,7 +110,9 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
                   required
                   min="1"
                   value={qty}
-                  onChange={(e) => setQty(Math.max(1, Number(e.target.value)))}
+                  onFocus={(e) => e.target.select()}
+                  onChange={(e) => setQty(e.target.value === '' ? '' : Number(e.target.value))}
+                  placeholder="1"
                   className="w-full bg-[#181924] text-white text-xs px-3.5 py-2.5 rounded-xl border border-[#282937] focus:outline-none focus:border-[#FF5A5F] font-mono font-bold"
                 />
               </div>
