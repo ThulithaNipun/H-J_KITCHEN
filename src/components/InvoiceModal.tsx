@@ -253,7 +253,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
             >
               <div>
                 {/* Header Bar: INVOICE title on Left, Logo on Right */}
-                <div className="flex items-start justify-between border-b-2 border-[#4E540C]/20 pb-4 mb-5">
+                <div className="flex items-start justify-between border-b-2 border-[#4E540C]/20 pb-3 mb-3.5">
                   <div>
                     <h1 className="text-5xl font-black font-poppins tracking-wider text-[#4E540C] uppercase">
                       INVOICE
@@ -273,7 +273,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                       </p>
                       <p className="text-xs text-[#6B6F4A] font-semibold">Tel: {businessSettings.phone}</p>
                     </div>
-                    <div className="w-24 h-24 bg-white border-2 border-[#4E540C]/20 rounded-2xl p-1.5 flex items-center justify-center shrink-0 shadow-sm">
+                    <div className="w-22 h-22 bg-white border-2 border-[#4E540C]/20 rounded-2xl p-1.5 flex items-center justify-center shrink-0 shadow-sm">
                       <img
                         src={businessSettings.logo_url || '/logo.webp'}
                         alt="Logo"
@@ -284,10 +284,10 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                 </div>
 
                 {/* Top Metadata Block: Invoice Details (Left) & Bill To (Right) - EQUAL 50/50 GRID */}
-                <div className="grid grid-cols-2 gap-5 mb-5 text-sm text-[#2B2E12]">
+                <div className="grid grid-cols-2 gap-4 mb-3.5 text-sm text-[#2B2E12]">
                   {/* Left Box: Invoice Details */}
-                  <div className="space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
-                    <h3 className="font-extrabold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1.5 mb-2">
+                  <div className="space-y-1.5 bg-[#F4F6E6]/60 p-3 rounded-xl border border-[#4E540C]/10">
+                    <h3 className="font-extrabold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1 mb-1.5">
                       Invoice Details
                     </h3>
                     <div className="flex items-center">
@@ -301,8 +301,8 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                   </div>
 
                   {/* Right Box: Bill To */}
-                  <div className="space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
-                    <h3 className="font-extrabold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1.5 mb-2">
+                  <div className="space-y-1.5 bg-[#F4F6E6]/60 p-3 rounded-xl border border-[#4E540C]/10">
+                    <h3 className="font-extrabold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1 mb-1.5">
                       Bill To
                     </h3>
                     <div className="flex items-center">
@@ -331,16 +331,16 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                 </div>
 
                 {/* Items Table */}
-                <div className="border border-[#4E540C]/30 rounded-xl overflow-hidden mb-5 shadow-sm">
+                <div className="border border-[#4E540C]/30 rounded-xl overflow-hidden mb-3.5 shadow-sm">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="bg-[#4E540C] text-white text-sm uppercase tracking-wider font-bold">
-                        <th className="py-2.5 px-3 text-center w-12 border-r border-white/20">SL.</th>
-                        <th className="py-2.5 px-4">Description</th>
-                        <th className="py-2.5 px-3 text-center w-16 border-l border-r border-white/20">Qty</th>
-                        <th className="py-2.5 px-3 text-right w-28 border-r border-white/20">Price</th>
-                        <th className="py-2.5 px-4 text-right w-32">Amount</th>
-                        <th className="py-2.5 px-1 no-print text-center w-8"></th>
+                        <th className="py-2 px-3 text-center w-12 border-r border-white/20">SL.</th>
+                        <th className="py-2 px-4">Description</th>
+                        <th className="py-2 px-3 text-center w-16 border-l border-r border-white/20">Qty</th>
+                        <th className="py-2 px-3 text-right w-28 border-r border-white/20">Price</th>
+                        <th className="py-2 px-4 text-right w-32">Amount</th>
+                        <th className="py-2 px-1 no-print text-center w-8"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#4E540C]/15 text-sm">
@@ -357,11 +357,11 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                             key={item.id}
                             className={idx % 2 === 1 ? 'bg-[#F4F6E6]' : 'bg-white'}
                           >
-                            <td className="py-2 px-3 text-center font-bold text-[#6B6F4A] border-r border-[#4E540C]/10 font-mono text-sm">
+                            <td className="py-1.5 px-3 text-center font-bold text-[#6B6F4A] border-r border-[#4E540C]/10 font-mono text-sm">
                               {idx + 1}
                             </td>
 
-                            <td className="py-2 px-4 font-semibold text-[#2B2E12]">
+                            <td className="py-1.5 px-4 font-semibold text-[#2B2E12]">
                               <input
                                 type="text"
                                 value={item.name}
@@ -371,7 +371,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                               />
                             </td>
 
-                            <td className="py-2 px-3 text-center border-l border-r border-[#4E540C]/10">
+                            <td className="py-1.5 px-3 text-center border-l border-r border-[#4E540C]/10">
                               {isBlank ? (
                                 <input
                                   type="number"
@@ -396,7 +396,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                               )}
                             </td>
 
-                            <td className="py-2 px-3 text-right font-mono border-r border-[#4E540C]/10">
+                            <td className="py-1.5 px-3 text-right font-mono border-r border-[#4E540C]/10">
                               {isBlank ? (
                                 <input
                                   type="number"
@@ -421,11 +421,11 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                               )}
                             </td>
 
-                            <td className="py-2 px-4 text-right font-mono font-bold text-sm text-[#2B2E12]">
+                            <td className="py-1.5 px-4 text-right font-mono font-bold text-sm text-[#2B2E12]">
                               {isBlank ? '' : `Rs. ${lineTotal.toFixed(2)}`}
                             </td>
 
-                            <td className="py-2 px-1 no-print text-center">
+                            <td className="py-1.5 px-1 no-print text-center">
                               {!isBlank && (
                                 <button
                                   onClick={() => handleDeleteLine(item.id)}
@@ -443,7 +443,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                   </table>
 
                   {/* Add Line Item Trigger */}
-                  <div className="no-print p-2.5 bg-[#F4F6E6]/80 border-t border-[#4E540C]/20 flex justify-start">
+                  <div className="no-print p-2 bg-[#F4F6E6]/80 border-t border-[#4E540C]/20 flex justify-start">
                     <button
                       onClick={handleAddLine}
                       className="flex items-center gap-1.5 text-sm font-bold text-[#4E540C] hover:text-black transition-colors"
@@ -455,41 +455,41 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                 </div>
 
                 {/* Bottom Section: Bank Payment Information & Note (Left) and Totals Summary (Right) - FIXED FLEX ROW */}
-                <div className="flex flex-row justify-between gap-5 mb-5 text-sm">
+                <div className="flex flex-row justify-between gap-4 mb-3 text-sm">
                   {/* Left Side: Bank Payment Details & Note */}
-                  <div className="flex-1 space-y-3">
+                  <div className="flex-1 space-y-2">
                     {/* Bank Payment Information */}
-                    <div className="bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10 space-y-1.5">
-                      <h4 className="font-bold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1 mb-2">
+                    <div className="bg-[#F4F6E6]/60 p-3 rounded-xl border border-[#4E540C]/10 space-y-1">
+                      <h4 className="font-bold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-0.5 mb-1">
                         Bank & Payment Information
                       </h4>
                       <div className="flex items-center">
-                        <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Bank</span>
+                        <span className="w-24 font-bold text-[#6B6F4A] shrink-0 text-sm">Bank</span>
                         <span className="font-bold text-[#2B2E12] text-sm">: {businessSettings.bank_name || 'Commercial Bank'}</span>
                       </div>
                       <div className="flex items-center">
-                        <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Account</span>
+                        <span className="w-24 font-bold text-[#6B6F4A] shrink-0 text-sm">Account</span>
                         <span className="font-mono font-bold text-[#2B2E12] text-sm">: {businessSettings.bank_account || '8001234567'}</span>
                       </div>
                       <div className="flex items-center">
-                        <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">A/C Name</span>
+                        <span className="w-24 font-bold text-[#6B6F4A] shrink-0 text-sm">A/C Name</span>
                         <span className="font-bold text-[#2B2E12] text-sm">: {businessSettings.name || 'H&J Kitchen'}</span>
                       </div>
                     </div>
 
                     {/* Note Block */}
-                    <div className="bg-[#F4F6E6]/60 p-3.5 rounded-xl border border-[#4E540C]/10">
-                      <h4 className="font-bold text-xs uppercase text-[#4E540C] mb-1">
+                    <div className="bg-[#F4F6E6]/60 p-2.5 rounded-xl border border-[#4E540C]/10">
+                      <h4 className="font-bold text-xs uppercase text-[#4E540C] mb-0.5">
                         Note:
                       </h4>
-                      <p className="text-xs text-[#6B6F4A] font-semibold leading-relaxed">
+                      <p className="text-xs text-[#6B6F4A] font-semibold leading-tight">
                         {businessSettings.invoice_note}
                       </p>
                     </div>
                   </div>
 
                   {/* Right Side: Totals Summary - FIXED WIDTH 320px */}
-                  <div className="w-80 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10 space-y-2 font-bold text-sm shrink-0">
+                  <div className="w-80 bg-[#F4F6E6]/60 p-3 rounded-xl border border-[#4E540C]/10 space-y-1.5 font-bold text-sm shrink-0">
                     <div className="flex justify-between text-[#6B6F4A]">
                       <span>Sub Total</span>
                       <span className="font-mono text-[#2B2E12] font-black text-sm">Rs. {subtotal.toFixed(2)}</span>
@@ -505,7 +505,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                       <span className="font-mono text-[#2B2E12] font-black text-sm">+ Rs. {taxAmount.toFixed(2)}</span>
                     </div>
 
-                    <div className="bg-[#4E540C] text-white p-3 rounded-lg flex justify-between items-center mt-2 shadow-sm">
+                    <div className="bg-[#4E540C] text-white p-2.5 rounded-lg flex justify-between items-center mt-1.5 shadow-sm">
                       <span className="font-bold uppercase tracking-wider font-poppins text-xs sm:text-sm">
                         Grand Total
                       </span>
@@ -518,7 +518,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
               </div>
 
               {/* Green Full-Width Footer Banner (Edge-to-Edge with Zero Clipping) */}
-              <div className="bg-[#4E540C] text-white -mx-8 py-5 px-8 rounded-b-xl text-center space-y-1 shadow-sm mt-auto">
+              <div className="bg-[#4E540C] text-white -mx-8 py-4 px-8 rounded-b-xl text-center space-y-1 shadow-sm mt-auto">
                 <h3 className="font-serif italic text-xl text-yellow-200">
                   Thank You For Your Order!
                 </h3>
