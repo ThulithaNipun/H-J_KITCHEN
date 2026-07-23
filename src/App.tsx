@@ -201,8 +201,8 @@ export function App() {
     showToast('Added Custom Add-On to order!');
   };
 
-  // Immediate Order History Save when "Print bills" button is clicked
-  const handlePrintBillsAndOpenInvoice = () => {
+  // Immediate Order History Save when "Print Invoice" button is clicked
+  const handlePrintBillsAndOpenInvoice = async () => {
     if (orderItems.length === 0) return;
 
     const receiptNo = Math.floor(100000 + Math.random() * 900000);
@@ -219,22 +219,31 @@ export function App() {
       items: [...orderItems],
     };
 
+    // Save to Supabase and get the actual created database UUID
+    const supabaseOrder = await saveOrderToSupabase(newRecord, orderItems);
+    if (supabaseOrder && supabaseOrder.id) {
+      newRecord.id = supabaseOrder.id;
+    }
+
     setOrderHistory((prev) => [newRecord, ...prev]);
-    saveOrderToSupabase(newRecord, orderItems).catch(() => {});
     showToast(`Order #${receiptNo} saved to history!`);
 
     setIsInvoiceModalOpen(true);
   };
 
   const handleDeleteOrderHistoryItem = (orderId: string) => {
+    const targetOrder = orderHistory.find((o) => o.id === orderId);
     setOrderHistory((prev) => prev.filter((o) => o.id !== orderId));
-    deleteOrderFromSupabase(orderId).catch(() => {});
+    deleteOrderFromSupabase(orderId, targetOrder?.receipt_no).catch(() => {});
     showToast('Receipt deleted from history!');
   };
 
-  const handleAddMenuItem = (newItem: MenuItem) => {
+  const handleAddMenuItem = async (newItem: MenuItem) => {
+    const created = await saveMenuItemToSupabase(newItem);
+    if (created && created.id) {
+      newItem.id = created.id;
+    }
     setMenuItems((prev) => [newItem, ...prev]);
-    saveMenuItemToSupabase(newItem).catch(() => {});
     showToast(`Added "${newItem.name}" to menu!`);
   };
 

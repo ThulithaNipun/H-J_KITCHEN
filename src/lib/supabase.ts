@@ -255,12 +255,16 @@ export async function saveOrderToSupabase(
   return orderData;
 }
 
-export async function deleteOrderFromSupabase(orderId: string) {
-  if (!isSupabaseConfigured() || orderId.startsWith('ord-')) return null;
-  const { error } = await supabase
-    .from('orders')
-    .delete()
-    .eq('id', orderId);
+export async function deleteOrderFromSupabase(orderId: string, receiptNo?: number) {
+  if (!isSupabaseConfigured()) return null;
 
+  let query = supabase.from('orders').delete();
+  if (receiptNo && orderId.startsWith('ord-')) {
+    query = query.eq('receipt_no', receiptNo);
+  } else {
+    query = query.eq('id', orderId);
+  }
+
+  const { error } = await query;
   if (error) console.error('Supabase order delete error:', error);
 }
