@@ -520,19 +520,13 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
               {/* Green Full-Width Footer Banner (Edge-to-Edge with Zero Clipping) */}
               <div className="bg-[#4E540C] text-white -mx-8 py-5 px-8 rounded-b-xl text-center space-y-1 shadow-sm mt-auto">
                 <h3 className="font-serif italic text-xl text-yellow-200">
-                  Thank You & Come Again
+                  Thank You For Your Order!
                 </h3>
-                <p className="text-xs sm:text-sm font-bold tracking-wider uppercase font-poppins">
-                  {businessSettings.name || 'H&J KITCHEN RESTAURANT'}
+                <p className="text-xs sm:text-sm font-bold tracking-wider uppercase font-poppins text-white/95">
+                  Follow us on social media
                 </p>
                 <p className="text-xs text-white/90 font-mono font-semibold pt-0.5">
-                  Phone: {businessSettings.phone} | {
-                    !businessSettings.website
-                      ? 'FB: H&J Kitchen'
-                      : businessSettings.website.toLowerCase().includes('fb') || businessSettings.website.toLowerCase().includes('facebook')
-                      ? businessSettings.website
-                      : `FB: ${businessSettings.website}`
-                  }
+                  Phone: {businessSettings.phone} | Facebook: H&J Kitchen
                 </p>
               </div>
             </div>
