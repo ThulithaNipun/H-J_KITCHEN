@@ -315,18 +315,27 @@ export async function saveCustomerToSupabase(customer: Customer | Omit<Customer,
     phone: customer.phone || null,
   };
 
-  if ('id' in customer && customer.id && !customer.id.startsWith('c_') && !customer.id.startsWith('c1') && !customer.id.startsWith('c2') && !customer.id.startsWith('c3')) {
+  const isExistingUUID =
+    'id' in customer &&
+    customer.id &&
+    !customer.id.startsWith('c_') &&
+    !customer.id.startsWith('c1') &&
+    !customer.id.startsWith('c2') &&
+    !customer.id.startsWith('c3');
+
+  let response;
+  if (isExistingUUID) {
     payload.id = customer.id;
+    response = await supabase.from('customers').upsert(payload).select().single();
+  } else {
+    response = await supabase.from('customers').insert(payload).select().single();
   }
 
-  const { data, error } = await supabase
-    .from('customers')
-    .upsert(payload)
-    .select()
-    .single();
-
-  if (error) console.error('Supabase customer save error:', error);
-  return data;
+  if (response.error) {
+    console.error('Supabase customer save error:', response.error);
+    return null;
+  }
+  return response.data;
 }
 
 export async function deleteCustomerFromSupabase(id: string) {

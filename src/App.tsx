@@ -104,30 +104,44 @@ export function App() {
     localStorage.setItem('hj_saved_customers', JSON.stringify(customers));
   }, [customers]);
 
-  const handleAddCustomer = async (c: Omit<Customer, 'id'>) => {
+  const handleAddCustomer = (c: Omit<Customer, 'id'>) => {
+    const tempId = `c_${Date.now()}`;
     const newCustomer: Customer = {
       ...c,
-      id: `c_${Date.now()}`,
+      id: tempId,
       created_at: new Date().toISOString(),
     };
-    const savedRemote = await saveCustomerToSupabase(c);
-    if (savedRemote && savedRemote.id) {
-      newCustomer.id = savedRemote.id;
-    }
+
+    // 1. Instantly update local state and localStorage
     setCustomers((prev) => [newCustomer, ...prev]);
     showToast(`Saved "${newCustomer.name}" to directory!`);
+
+    // 2. Sync to Supabase in background
+    saveCustomerToSupabase(c)
+      .then((savedRemote) => {
+        if (savedRemote && savedRemote.id) {
+          setCustomers((prev) =>
+            prev.map((item) =>
+              item.id === tempId ? { ...item, id: savedRemote.id } : item
+            )
+          );
+        }
+      })
+      .catch((err) => {
+        console.error('Background customer sync error:', err);
+      });
   };
 
-  const handleEditCustomer = async (updated: Customer) => {
+  const handleEditCustomer = (updated: Customer) => {
     setCustomers((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
-    await saveCustomerToSupabase(updated);
     showToast(`Updated "${updated.name}"!`);
+    saveCustomerToSupabase(updated).catch(() => {});
   };
 
-  const handleDeleteCustomer = async (id: string) => {
+  const handleDeleteCustomer = (id: string) => {
     setCustomers((prev) => prev.filter((c) => c.id !== id));
-    await deleteCustomerFromSupabase(id);
     showToast('Customer deleted from directory!');
+    deleteCustomerFromSupabase(id).catch(() => {});
   };
 
   const handleSelectCustomerForOrder = (customer: Customer) => {
@@ -175,7 +189,15 @@ export function App() {
         }
         const remoteCustomers = await fetchCustomersFromSupabase();
         if (remoteCustomers && remoteCustomers.length > 0) {
-          setCustomers(remoteCustomers);
+          setCustomers((prev) => {
+            const merged = [...remoteCustomers];
+            prev.forEach((localItem) => {
+              if (!merged.some((r) => r.id === localItem.id || r.name.toLowerCase() === localItem.name.toLowerCase())) {
+                merged.push(localItem);
+              }
+            });
+            return merged;
+          });
         }
       } catch (err) {
         console.log('Supabase sync using local fallback data:', err);
