@@ -249,29 +249,29 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
               id="printable-invoice"
               ref={invoiceRef}
               style={{ width: '794px', minWidth: '794px', height: '1123px', minHeight: '1123px' }}
-              className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 text-[#2B2E12] font-inter border border-[#4E540C]/20 flex flex-col justify-between shrink-0 overflow-hidden"
+              className="bg-white rounded-xl shadow-2xl p-8 text-[#2B2E12] font-inter border border-[#4E540C]/20 flex flex-col justify-between shrink-0 overflow-hidden"
             >
               <div>
                 {/* Header Bar: INVOICE title on Left, Logo on Right */}
-                <div className="flex items-start justify-between border-b-2 border-[#4E540C]/20 pb-4 mb-4">
+                <div className="flex items-start justify-between border-b-2 border-[#4E540C]/20 pb-4 mb-5">
                   <div>
-                    <h1 className="text-4xl font-black font-poppins tracking-wider text-[#4E540C] uppercase">
+                    <h1 className="text-5xl font-black font-poppins tracking-wider text-[#4E540C] uppercase">
                       INVOICE
                     </h1>
-                    <p className="text-xs font-bold text-[#6B6F4A] tracking-wider uppercase mt-0.5">
+                    <p className="text-sm font-bold text-[#6B6F4A] tracking-wider uppercase mt-1">
                       {businessSettings.name || 'H&J KITCHEN RESTAURANT'}
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-3 text-right">
+                  <div className="flex items-center gap-4 text-right">
                     <div>
-                      <h2 className="text-sm font-bold text-[#4E540C]">
+                      <h2 className="text-base font-extrabold text-[#4E540C]">
                         {businessSettings.name || 'H&J KITCHEN'}
                       </h2>
-                      <p className="text-[11px] text-[#6B6F4A] font-medium">{businessSettings.address}</p>
-                      <p className="text-[11px] text-[#6B6F4A] font-medium">Tel: {businessSettings.phone}</p>
+                      <p className="text-xs text-[#6B6F4A] font-semibold">{businessSettings.address}</p>
+                      <p className="text-xs text-[#6B6F4A] font-semibold">Tel: {businessSettings.phone}</p>
                     </div>
-                    <div className="w-16 h-16 bg-white border border-[#4E540C]/20 rounded-xl p-1 flex items-center justify-center shrink-0 shadow-sm">
+                    <div className="w-24 h-24 bg-white border-2 border-[#4E540C]/20 rounded-2xl p-1.5 flex items-center justify-center shrink-0 shadow-sm">
                       <img
                         src={businessSettings.logo_url || '/logo.webp'}
                         alt="Logo"
@@ -282,66 +282,66 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                 </div>
 
                 {/* Top Metadata Block: Invoice Details (Left) & Bill To (Right) - FIXED 2 COLUMNS */}
-                <div className="grid grid-cols-2 gap-4 mb-4 text-xs text-[#2B2E12]">
+                <div className="grid grid-cols-2 gap-5 mb-5 text-sm text-[#2B2E12]">
                   {/* Left Box: Invoice Details */}
-                  <div className="space-y-1.5 bg-[#F4F6E6]/60 p-3 rounded-xl border border-[#4E540C]/10">
-                    <h3 className="font-bold text-xs uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1 mb-1">
+                  <div className="space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
+                    <h3 className="font-extrabold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1.5 mb-2">
                       Invoice Details
                     </h3>
                     <div className="flex items-center">
-                      <span className="w-24 font-semibold text-[#6B6F4A] shrink-0 text-xs">Invoice No</span>
-                      <span className="font-mono font-black text-[#4E540C] text-xs">: #{receiptNo}</span>
+                      <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Invoice No</span>
+                      <span className="font-mono font-black text-[#4E540C] text-base">: #{receiptNo}</span>
                     </div>
                     <div className="flex items-center">
-                      <span className="w-24 font-semibold text-[#6B6F4A] shrink-0 text-xs">Date</span>
-                      <span className="font-mono font-bold text-[#2B2E12] text-xs">: {formattedDate}</span>
+                      <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Date</span>
+                      <span className="font-mono font-bold text-[#2B2E12] text-sm">: {formattedDate}</span>
                     </div>
                   </div>
 
                   {/* Right Box: Bill To */}
-                  <div className="space-y-1.5 bg-[#F4F6E6]/60 p-3 rounded-xl border border-[#4E540C]/10">
-                    <h3 className="font-bold text-xs uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1 mb-1">
+                  <div className="space-y-2 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10">
+                    <h3 className="font-extrabold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1.5 mb-2">
                       Bill To
                     </h3>
                     <div className="flex items-center">
-                      <span className="w-24 font-semibold text-[#6B6F4A] shrink-0 text-xs">Name</span>
+                      <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Name</span>
                       <span className="font-bold text-[#2B2E12] mr-1.5">:</span>
                       <input
                         type="text"
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         placeholder="Mr. Client"
-                        className="bg-transparent border-b border-transparent hover:border-[#4E540C]/30 focus:border-[#4E540C] focus:outline-none font-bold text-xs w-full py-0.5"
+                        className="bg-transparent border-b border-transparent hover:border-[#4E540C]/30 focus:border-[#4E540C] focus:outline-none font-bold text-sm w-full py-0.5"
                       />
                     </div>
                     <div className="flex items-center">
-                      <span className="w-24 font-semibold text-[#6B6F4A] shrink-0 text-xs">Address</span>
+                      <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Address</span>
                       <span className="font-bold text-[#2B2E12] mr-1.5">:</span>
                       <input
                         type="text"
                         value={customerAddress}
                         onChange={(e) => setCustomerAddress(e.target.value)}
                         placeholder="Enter Address"
-                        className="bg-transparent border-b border-transparent hover:border-[#4E540C]/30 focus:border-[#4E540C] focus:outline-none font-medium text-xs w-full py-0.5 placeholder-[#6B6F4A]/40"
+                        className="bg-transparent border-b border-transparent hover:border-[#4E540C]/30 focus:border-[#4E540C] focus:outline-none font-semibold text-sm w-full py-0.5 placeholder-[#6B6F4A]/40"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Items Table */}
-                <div className="border border-[#4E540C]/30 rounded-xl overflow-hidden mb-4 shadow-sm">
+                <div className="border border-[#4E540C]/30 rounded-xl overflow-hidden mb-5 shadow-sm">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="bg-[#4E540C] text-white text-xs uppercase tracking-wider font-bold">
-                        <th className="py-2 px-3 text-center w-12 border-r border-white/20">SL.</th>
-                        <th className="py-2 px-3">Description</th>
-                        <th className="py-2 px-3 text-center w-16 border-l border-r border-white/20">Qty</th>
-                        <th className="py-2 px-3 text-right w-24 border-r border-white/20">Price</th>
-                        <th className="py-2 px-3 text-right w-28">Amount</th>
-                        <th className="py-2 px-1 no-print text-center w-8"></th>
+                      <tr className="bg-[#4E540C] text-white text-sm uppercase tracking-wider font-bold">
+                        <th className="py-2.5 px-3 text-center w-12 border-r border-white/20">SL.</th>
+                        <th className="py-2.5 px-4">Description</th>
+                        <th className="py-2.5 px-3 text-center w-16 border-l border-r border-white/20">Qty</th>
+                        <th className="py-2.5 px-3 text-right w-28 border-r border-white/20">Price</th>
+                        <th className="py-2.5 px-4 text-right w-32">Amount</th>
+                        <th className="py-2.5 px-1 no-print text-center w-8"></th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#4E540C]/15 text-xs">
+                    <tbody className="divide-y divide-[#4E540C]/15 text-sm">
                       {editableItems.map((item, idx) => {
                         const isBlank =
                           item.name.trim() === '' ||
@@ -355,21 +355,21 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                             key={item.id}
                             className={idx % 2 === 1 ? 'bg-[#F4F6E6]' : 'bg-white'}
                           >
-                            <td className="py-1.5 px-3 text-center font-bold text-[#6B6F4A] border-r border-[#4E540C]/10 font-mono text-xs">
+                            <td className="py-2 px-3 text-center font-bold text-[#6B6F4A] border-r border-[#4E540C]/10 font-mono text-sm">
                               {idx + 1}
                             </td>
 
-                            <td className="py-1.5 px-3 font-medium text-[#2B2E12]">
+                            <td className="py-2 px-4 font-semibold text-[#2B2E12]">
                               <input
                                 type="text"
                                 value={item.name}
                                 onChange={(e) => handleItemChange(item.id, 'name', e.target.value)}
                                 placeholder=""
-                                className="w-full bg-transparent focus:bg-white focus:ring-1 focus:ring-[#4E540C] rounded px-1 py-0.5 font-semibold text-xs border-b border-transparent hover:border-[#4E540C]/20"
+                                className="w-full bg-transparent focus:bg-white focus:ring-1 focus:ring-[#4E540C] rounded px-1.5 py-0.5 font-semibold text-sm border-b border-transparent hover:border-[#4E540C]/20"
                               />
                             </td>
 
-                            <td className="py-1.5 px-3 text-center border-l border-r border-[#4E540C]/10">
+                            <td className="py-2 px-3 text-center border-l border-r border-[#4E540C]/10">
                               {isBlank ? (
                                 <input
                                   type="number"
@@ -379,7 +379,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                                     handleItemChange(item.id, 'qty', Math.max(0, Number(e.target.value)))
                                   }
                                   placeholder=""
-                                  className="w-12 text-center bg-transparent focus:bg-white focus:ring-1 focus:ring-[#4E540C] rounded font-bold font-mono py-0.5 text-xs"
+                                  className="w-14 text-center bg-transparent focus:bg-white focus:ring-1 focus:ring-[#4E540C] rounded font-bold font-mono py-0.5 text-sm"
                                 />
                               ) : (
                                 <input
@@ -389,12 +389,12 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                                   onChange={(e) =>
                                     handleItemChange(item.id, 'qty', Math.max(0, Number(e.target.value)))
                                   }
-                                  className="w-12 text-center bg-transparent focus:bg-white focus:ring-1 focus:ring-[#4E540C] rounded font-bold font-mono py-0.5 text-xs"
+                                  className="w-14 text-center bg-transparent focus:bg-white focus:ring-1 focus:ring-[#4E540C] rounded font-bold font-mono py-0.5 text-sm"
                                 />
                               )}
                             </td>
 
-                            <td className="py-1.5 px-3 text-right font-mono border-r border-[#4E540C]/10">
+                            <td className="py-2 px-3 text-right font-mono border-r border-[#4E540C]/10">
                               {isBlank ? (
                                 <input
                                   type="number"
@@ -404,7 +404,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                                     handleItemChange(item.id, 'price', Number(e.target.value))
                                   }
                                   placeholder=""
-                                  className="w-20 text-right bg-transparent focus:bg-white focus:ring-1 focus:ring-[#4E540C] rounded font-bold font-mono py-0.5 text-xs"
+                                  className="w-24 text-right bg-transparent focus:bg-white focus:ring-1 focus:ring-[#4E540C] rounded font-bold font-mono py-0.5 text-sm"
                                 />
                               ) : (
                                 <input
@@ -414,23 +414,23 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                                   onChange={(e) =>
                                     handleItemChange(item.id, 'price', Number(e.target.value))
                                   }
-                                  className="w-20 text-right bg-transparent focus:bg-white focus:ring-1 focus:ring-[#4E540C] rounded font-bold font-mono py-0.5 text-xs"
+                                  className="w-24 text-right bg-transparent focus:bg-white focus:ring-1 focus:ring-[#4E540C] rounded font-bold font-mono py-0.5 text-sm"
                                 />
                               )}
                             </td>
 
-                            <td className="py-1.5 px-3 text-right font-mono font-bold text-xs text-[#2B2E12]">
+                            <td className="py-2 px-4 text-right font-mono font-bold text-sm text-[#2B2E12]">
                               {isBlank ? '' : `Rs. ${lineTotal.toFixed(2)}`}
                             </td>
 
-                            <td className="py-1.5 px-1 no-print text-center">
+                            <td className="py-2 px-1 no-print text-center">
                               {!isBlank && (
                                 <button
                                   onClick={() => handleDeleteLine(item.id)}
                                   className="text-red-500 hover:text-red-700 p-0.5 transition-colors"
                                   title="Delete row"
                                 >
-                                  <Trash2 className="w-3.5 h-3.5" />
+                                  <Trash2 className="w-4 h-4" />
                                 </button>
                               )}
                             </td>
@@ -441,73 +441,73 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
                   </table>
 
                   {/* Add Line Item Trigger */}
-                  <div className="no-print p-2 bg-[#F4F6E6]/80 border-t border-[#4E540C]/20 flex justify-start">
+                  <div className="no-print p-2.5 bg-[#F4F6E6]/80 border-t border-[#4E540C]/20 flex justify-start">
                     <button
                       onClick={handleAddLine}
-                      className="flex items-center gap-1 text-xs font-bold text-[#4E540C] hover:text-black transition-colors"
+                      className="flex items-center gap-1.5 text-sm font-bold text-[#4E540C] hover:text-black transition-colors"
                     >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Plus className="w-4 h-4" />
                       <span>Add Line Item</span>
                     </button>
                   </div>
                 </div>
 
                 {/* Bottom Section: Bank Payment Information & Note (Left) and Totals Summary (Right) - FIXED FLEX ROW */}
-                <div className="flex flex-row justify-between gap-4 mb-4 text-xs">
+                <div className="flex flex-row justify-between gap-5 mb-5 text-sm">
                   {/* Left Side: Bank Payment Details & Note */}
-                  <div className="flex-1 space-y-2">
+                  <div className="flex-1 space-y-3">
                     {/* Bank Payment Information */}
-                    <div className="bg-[#F4F6E6]/60 p-3 rounded-xl border border-[#4E540C]/10 space-y-1">
-                      <h4 className="font-bold text-xs uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-0.5 mb-1">
+                    <div className="bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10 space-y-1.5">
+                      <h4 className="font-bold text-sm uppercase tracking-wider text-[#4E540C] border-b border-[#4E540C]/20 pb-1 mb-2">
                         Bank & Payment Information
                       </h4>
                       <div className="flex items-center">
-                        <span className="w-20 font-semibold text-[#6B6F4A] shrink-0 text-xs">Bank</span>
-                        <span className="font-bold text-[#2B2E12] text-xs">: {businessSettings.bank_name || 'Commercial Bank'}</span>
+                        <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Bank</span>
+                        <span className="font-bold text-[#2B2E12] text-sm">: {businessSettings.bank_name || 'Commercial Bank'}</span>
                       </div>
                       <div className="flex items-center">
-                        <span className="w-20 font-semibold text-[#6B6F4A] shrink-0 text-xs">Account</span>
-                        <span className="font-mono font-bold text-[#2B2E12] text-xs">: {businessSettings.bank_account || '8001234567'}</span>
+                        <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">Account</span>
+                        <span className="font-mono font-bold text-[#2B2E12] text-sm">: {businessSettings.bank_account || '8001234567'}</span>
                       </div>
                       <div className="flex items-center">
-                        <span className="w-20 font-semibold text-[#6B6F4A] shrink-0 text-xs">A/C Name</span>
-                        <span className="font-bold text-[#2B2E12] text-xs">: {businessSettings.name || 'H&J Kitchen'}</span>
+                        <span className="w-28 font-bold text-[#6B6F4A] shrink-0 text-sm">A/C Name</span>
+                        <span className="font-bold text-[#2B2E12] text-sm">: {businessSettings.name || 'H&J Kitchen'}</span>
                       </div>
                     </div>
 
                     {/* Note Block */}
-                    <div className="bg-[#F4F6E6]/60 p-2.5 rounded-xl border border-[#4E540C]/10">
-                      <h4 className="font-bold text-[11px] uppercase text-[#4E540C] mb-0.5">
+                    <div className="bg-[#F4F6E6]/60 p-3.5 rounded-xl border border-[#4E540C]/10">
+                      <h4 className="font-bold text-xs uppercase text-[#4E540C] mb-1">
                         Note:
                       </h4>
-                      <p className="text-[11px] text-[#6B6F4A] font-medium leading-tight">
+                      <p className="text-xs text-[#6B6F4A] font-semibold leading-relaxed">
                         {businessSettings.invoice_note}
                       </p>
                     </div>
                   </div>
 
-                  {/* Right Side: Totals Summary - FIXED WIDTH 280px */}
-                  <div className="w-72 bg-[#F4F6E6]/60 p-3 rounded-xl border border-[#4E540C]/10 space-y-1.5 font-semibold text-xs shrink-0">
+                  {/* Right Side: Totals Summary - FIXED WIDTH 320px */}
+                  <div className="w-80 bg-[#F4F6E6]/60 p-4 rounded-xl border border-[#4E540C]/10 space-y-2 font-bold text-sm shrink-0">
                     <div className="flex justify-between text-[#6B6F4A]">
                       <span>Sub Total</span>
-                      <span className="font-mono text-[#2B2E12] font-bold text-xs">Rs. {subtotal.toFixed(2)}</span>
+                      <span className="font-mono text-[#2B2E12] font-black text-sm">Rs. {subtotal.toFixed(2)}</span>
                     </div>
 
                     <div className="flex justify-between items-center text-[#6B6F4A]">
                       <span>Discount ({discountPct}%)</span>
-                      <span className="font-mono text-red-600 font-bold text-xs">- Rs. {discountAmount.toFixed(2)}</span>
+                      <span className="font-mono text-red-600 font-black text-sm">- Rs. {discountAmount.toFixed(2)}</span>
                     </div>
 
                     <div className="flex justify-between items-center text-[#6B6F4A]">
                       <span>Tax ({taxPct}%)</span>
-                      <span className="font-mono text-[#2B2E12] font-bold text-xs">+ Rs. {taxAmount.toFixed(2)}</span>
+                      <span className="font-mono text-[#2B2E12] font-black text-sm">+ Rs. {taxAmount.toFixed(2)}</span>
                     </div>
 
-                    <div className="bg-[#4E540C] text-white p-2.5 rounded-lg flex justify-between items-center mt-1.5 shadow-sm">
-                      <span className="font-bold uppercase tracking-wider font-poppins text-xs">
+                    <div className="bg-[#4E540C] text-white p-3 rounded-lg flex justify-between items-center mt-2 shadow-sm">
+                      <span className="font-bold uppercase tracking-wider font-poppins text-xs sm:text-sm">
                         Grand Total
                       </span>
-                      <span className="font-bold font-poppins text-sm text-yellow-300">
+                      <span className="font-bold font-poppins text-base sm:text-lg text-yellow-300">
                         Rs. {grandTotal.toFixed(2)}
                       </span>
                     </div>
@@ -516,14 +516,14 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({
               </div>
 
               {/* Green Footer Banner */}
-              <div className="bg-[#4E540C] text-white p-3 rounded-xl text-center space-y-0.5 shadow-sm mt-auto">
-                <h3 className="font-serif italic text-base text-yellow-200">
+              <div className="bg-[#4E540C] text-white p-4 rounded-xl text-center space-y-1 shadow-sm mt-auto">
+                <h3 className="font-serif italic text-xl text-yellow-200">
                   Thank You & Come Again
                 </h3>
-                <p className="text-[11px] font-bold tracking-wider uppercase font-poppins">
+                <p className="text-xs sm:text-sm font-bold tracking-wider uppercase font-poppins">
                   {businessSettings.name || 'H&J KITCHEN RESTAURANT'}
                 </p>
-                <p className="text-[10px] text-white/90 font-mono">
+                <p className="text-xs text-white/90 font-mono font-medium">
                   Phone: {businessSettings.phone} | {businessSettings.website}
                 </p>
               </div>
